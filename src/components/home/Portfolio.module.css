@@ -58,7 +58,7 @@
 .filterBtn.active {
   background-color: var(--color-dark);
   border-color: var(--color-dark);
-  color: var(--color-white);
+  color: #ffffff !important;
   box-shadow: var(--shadow-subtle);
 }
 
