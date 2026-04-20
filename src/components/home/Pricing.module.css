@@ -1,0 +1,160 @@
+.section {
+  padding: var(--space-4xl) 0;
+  background-color: var(--color-white);
+}
+
+.header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto var(--space-3xl) auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-md);
+}
+
+.subtitle {
+  color: var(--color-gray-500);
+  font-size: 1.125rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  border: 1px solid rgba(44, 37, 32, 0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.popularCard {
+  border: 2px solid var(--color-accent);
+  box-shadow: var(--shadow-card);
+  transform: scale(1);
+  background-color: var(--color-light); /* Slight tint */
+}
+
+@media (min-width: 1024px) {
+  .popularCard {
+    transform: scale(1.05);
+    z-index: 2;
+  }
+  .popularCard:hover {
+    transform: scale(1.05) translateY(-8px);
+  }
+}
+
+.popularBadge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  padding: 4px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 8px rgba(201, 160, 74, 0.3);
+}
+
+.pkgName {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-xs);
+  text-align: center;
+}
+
+.pkgDesc {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.priceContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
+}
+
+.currency {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 6px;
+  margin-right: 4px;
+}
+
+.amount {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-dark);
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(44, 37, 32, 0.08);
+  margin-bottom: var(--space-xl);
+}
+
+.featureList {
+  list-style: none;
+  flex: 1;
+  margin-bottom: var(--space-2xl);
+}
+
+.featureList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: var(--space-md);
+  font-size: 0.9375rem;
+  color: var(--color-dark);
+}
+
+.checkIcon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cardFooter {
+  margin-top: auto;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

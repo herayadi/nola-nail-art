@@ -1,0 +1,132 @@
+.section {
+  padding: var(--space-4xl) 0;
+  background-color: var(--color-light); /* Soft cream */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative background circle */
+.section::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 160, 160, 0.1) 0%, rgba(251, 248, 244, 0) 70%);
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3xl);
+  align-items: center;
+}
+
+.contentCol {
+  max-width: 500px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-md);
+  color: var(--color-dark);
+}
+
+.description {
+  color: var(--color-gray-500);
+  font-size: 1.125rem;
+  margin-bottom: var(--space-lg);
+  line-height: 1.7;
+}
+
+.list {
+  list-style: none;
+}
+
+.list li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: var(--space-sm);
+  color: var(--color-dark);
+  font-weight: 500;
+}
+
+.list li::before {
+  content: "♦";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-size: 0.8em;
+  top: 3px;
+}
+
+/* Cards Grid */
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.card {
+  padding: var(--space-xl);
+  height: 100%;
+}
+
+.iconBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-primary); /* Champagne */
+  color: var(--color-dark);
+  margin-bottom: var(--space-lg);
+}
+
+.featTitle {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  margin-bottom: var(--space-xs);
+}
+
+.featDesc {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+@media (min-width: 640px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Stagger the cards slightly on desktop */
+  .cardWrapper:nth-child(2n) {
+    transform: translateY(20px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}

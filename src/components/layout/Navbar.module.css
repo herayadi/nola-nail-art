@@ -1,0 +1,106 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  background-color: rgba(250, 250, 249, 0.8); /* stone-50/80 */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 40px rgba(44, 37, 32, 0.06);
+  transition: all 0.5s ease-in-out;
+  display: none; /* hidden by default on mobile */
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    display: block; /* md:block */
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem; /* py-5 px-8 */
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.875rem; /* text-3xl */
+  font-family: var(--font-heading); /* serif */
+  letter-spacing: -0.025em; /* tracking-tight */
+  color: #1c1917; /* stone-900 */
+  text-decoration: none;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem; /* gap-8 */
+  align-items: center;
+}
+
+.link {
+  color: #78716c; /* stone-500 */
+  font-family: var(--font-heading); /* serif */
+  font-style: italic; /* italic */
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.link:hover {
+  color: #292524; /* stone-800 */
+  opacity: 0.8;
+}
+
+.linkActive {
+  color: #1c1917; /* stone-900 */
+  font-weight: 600; /* font-semibold */
+  border-bottom: 1px solid rgba(28, 25, 23, 0.2); /* border-b border-stone-800/20 */
+  font-family: var(--font-heading);
+  font-style: italic;
+  text-decoration: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* gap-4 */
+}
+
+.waBtn {
+  color: #44403c; /* stone-700 */
+  font-family: var(--font-body); /* font-label roughly */
+  font-size: 0.875rem; /* text-sm */
+  letter-spacing: 0.025em; /* tracking-wide */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.waBtn:hover {
+  opacity: 0.8;
+}
+
+.bookBtn {
+  background-color: var(--color-accent); /* bg-primary */
+  color: #fff; /* text-on-primary */
+  padding: 0.625rem 1.5rem; /* py-2.5 px-6 */
+  border-radius: 9999px; /* rounded-full */
+  font-size: 0.875rem; /* text-sm */
+  font-family: var(--font-body);
+  letter-spacing: 0.025em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+  text-decoration: none;
+}
+
+.bookBtn:hover {
+  opacity: 0.8;
+}
+
+/* Dark mode overrides if requested (skipped explicit system dark mode for now to keep it straightforward with the palette) */

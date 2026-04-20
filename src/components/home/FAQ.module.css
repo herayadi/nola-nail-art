@@ -1,0 +1,123 @@
+.section {
+  padding: var(--space-4xl) 0;
+  background-color: var(--color-light);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-sm);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-md);
+}
+
+.subtitle {
+  color: var(--color-gray-500);
+  font-size: 1.125rem;
+  margin-bottom: var(--space-xl);
+}
+
+.contactCard {
+  background-color: var(--color-white);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(44, 37, 32, 0.05);
+  box-shadow: var(--shadow-subtle);
+  margin-top: var(--space-xl);
+}
+
+.contactCard h3 {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-xs);
+}
+
+.contactCard p {
+  color: var(--color-gray-500);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-lg);
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.accordionItem {
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(44, 37, 32, 0.05);
+  box-shadow: 0 2px 4px rgba(44, 37, 32, 0.02);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.accordionItem.open {
+  box-shadow: var(--shadow-subtle);
+  border-color: rgba(201, 160, 74, 0.3); /* subtle gold border when open */
+}
+
+.accordionHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.question {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--color-dark);
+}
+
+.icon {
+  color: var(--color-gray-400);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: var(--space-sm);
+}
+
+.iconOpen {
+  transform: rotate(180deg);
+  color: var(--color-accent);
+}
+
+.accordionContent {
+  /* Using inline styles for maxHeight/opacity animation but base styles here */
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.answer {
+  padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+  color: var(--color-gray-500);
+  font-size: 0.9375rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1.5fr;
+    align-items: start;
+  }
+}

@@ -1,0 +1,386 @@
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.wizardContainer {
+  background-color: var(--color-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-elevated);
+  border: 1px solid rgba(44, 37, 32, 0.05);
+  overflow: hidden;
+}
+
+/* Progress Header */
+.progressHeader {
+  padding: var(--space-xl) var(--space-xl) 0;
+  background-color: var(--color-gray-50);
+  border-bottom: 1px solid rgba(44, 37, 32, 0.08);
+}
+
+.progressBar {
+  height: 6px;
+  background-color: var(--color-gray-200);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-lg);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--color-accent);
+  transition: width 0.4s ease-in-out;
+}
+
+.stepsLabels {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: var(--space-md);
+  overflow-x: auto; /* Prevent cut-off on tiny screens */
+  scrollbar-width: none;
+}
+.stepsLabels::-webkit-scrollbar { display: none; }
+
+.stepLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-gray-400);
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.stepLabelActive {
+  color: var(--color-dark);
+  opacity: 1;
+}
+
+.stepDigit {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.stepLabelActive .stepDigit {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* Wizard Body General */
+.wizardBody {
+  padding: var(--space-2xl) var(--space-xl);
+  min-height: 400px;
+}
+
+.stepContent {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.stepTitle {
+  font-size: 1.75rem;
+  margin-bottom: var(--space-xs);
+}
+
+.stepDesc {
+  color: var(--color-gray-500);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-xl);
+}
+
+/* Nav Buttons */
+.navButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid rgba(44, 37, 32, 0.05);
+}
+
+.nextBtn {
+  margin-left: auto;
+}
+
+/* Step 1: Services */
+.servicesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.selectCard {
+  padding: var(--space-lg);
+  border: 2px solid var(--color-gray-100);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--color-white);
+}
+
+.selectCard:hover {
+  border-color: var(--color-gray-300);
+  transform: translateY(-2px);
+}
+
+.selectedCard, .selectedCard:hover {
+  border-color: var(--color-accent);
+  background-color: rgba(201, 160, 74, 0.03);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-sm);
+}
+
+.serviceName {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.serviceMeta {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.radioOutline {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--color-gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.selectedCard .radioOutline {
+  border-color: var(--color-accent);
+}
+
+.radioDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+}
+
+/* Step 2: Add-ons */
+.emptyText {
+  color: var(--color-gray-500);
+  font-style: italic;
+  padding: var(--space-xl) 0;
+  text-align: center;
+}
+
+.addonsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.addonRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addonRow:hover {
+  background-color: var(--color-gray-50);
+}
+
+.selectedAddon {
+  background-color: rgba(201, 160, 74, 0.05);
+  border-color: var(--color-accent);
+}
+
+.checkboxOutline {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid var(--color-gray-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectedAddon .checkboxOutline {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.checkIcon {
+  color: var(--color-white);
+}
+
+.addonInfo {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.addonName {
+  font-weight: 500;
+  color: var(--color-dark);
+}
+
+.addonPrice {
+  color: var(--color-gray-500);
+  font-size: 0.875rem;
+}
+
+/* Step 3 & 4: Forms */
+.formGroup {
+  margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+  color: var(--color-dark);
+  font-size: 0.9375rem;
+}
+
+.input, .textarea {
+  font-family: inherit;
+  padding: 12px var(--space-md);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus, .textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--space-xs);
+}
+
+.timeSlot {
+  padding: 12px 0;
+  text-align: center;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.timeSlot:hover {
+  border-color: var(--color-gray-400);
+}
+
+.selectedTime {
+  background-color: var(--color-dark);
+  border-color: var(--color-dark);
+  color: var(--color-white);
+}
+
+/* Step 5: Summary */
+.summaryCard {
+  background-color: var(--color-gray-50);
+  border: 1px solid rgba(44, 37, 32, 0.05);
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-sm) 0;
+  font-size: 0.9375rem;
+  color: var(--color-gray-500);
+}
+
+.summaryRow strong {
+  color: var(--color-dark);
+  text-align: right;
+  max-width: 60%;
+}
+
+.textRight {
+  text-align: right;
+  max-width: 60%;
+}
+
+.summaryDivider {
+  height: 1px;
+  background-color: var(--color-gray-200);
+  margin: var(--space-md) 0;
+}
+
+.summaryTotalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+.summaryPrice {
+  color: var(--color-accent);
+  font-size: 1.5rem;
+}
+
+.privacyMsg {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--color-gray-400);
+  margin-top: var(--space-lg);
+  line-height: 1.5;
+}
+
+.confirmBtn {
+  flex: 1;
+  margin-left: var(--space-md);
+  background-color: var(--color-whatsapp) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
+}
+
+.confirmBtn:hover {
+  background-color: var(--color-whatsapp-hover) !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+  .servicesGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
