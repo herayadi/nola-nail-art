@@ -10,6 +10,7 @@ interface ScrollRevealProps {
   duration?: number;
   className?: string;
   triggerOnce?: boolean;
+  style?: React.CSSProperties;
 }
 
 export default function ScrollReveal({
@@ -19,6 +20,7 @@ export default function ScrollReveal({
   duration = 800,
   className = "",
   triggerOnce = true,
+  style = {},
 }: ScrollRevealProps) {
   const { ref, isVisible } = useScrollReveal({ triggerOnce });
 
@@ -37,7 +39,8 @@ export default function ScrollReveal({
     }
   };
 
-  const inlineStyle = {
+  const inlineStyle: React.CSSProperties = {
+    ...style,
     opacity: isVisible ? 1 : 0,
     transform: getTransform(),
     transition: `opacity ${duration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms, transform ${duration}ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms`,
