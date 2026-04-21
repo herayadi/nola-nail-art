@@ -33,35 +33,35 @@ export default function KontakPage() {
   return (
     <div style={{ paddingTop: "var(--space-4xl)", paddingBottom: "var(--space-4xl)" }}>
       <section className="container">
-        
+
         <ScrollReveal animation="slideUp" style={{ textAlign: "center", marginBottom: "var(--space-3xl)" }}>
           <span style={{ color: "var(--color-accent)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em" }}>Hubungi Kami</span>
           <h1 style={{ fontSize: "3rem", margin: "var(--space-sm) 0" }}>Kami Siap Membantu</h1>
         </ScrollReveal>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "var(--space-xl)", marginBottom: "var(--space-4xl)" }}>
-          
+
           <ScrollReveal animation="fadeIn" delay={100}>
             <Card elevated style={{ height: "100%", padding: "var(--space-2xl)" }}>
               <h2 style={{ marginBottom: "var(--space-xl)" }}>Informasi Studio</h2>
-              
+
               <div style={{ display: "flex", gap: "var(--space-md)", marginBottom: "var(--space-lg)" }}>
                 <MapPin color="var(--color-accent)" style={{ flexShrink: 0 }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: "1rem" }}>Alamat Lengkap</h4>
                   <p style={{ color: "var(--color-gray-500)", margin: 0, fontSize: "0.9375rem" }}>
-                    Jl. Kecantikan Estetika No. 123<br/>
-                    Kebayoran Baru, Jakarta Selatan 12345
+                    Jl. Kalibata Utara V No.19A<br />
+                    Pancoran, Jakarta Selatan 12740
                   </p>
                 </div>
               </div>
-              
+
               <div style={{ display: "flex", gap: "var(--space-md)", marginBottom: "var(--space-lg)" }}>
                 <Clock color="var(--color-accent)" style={{ flexShrink: 0 }} />
                 <div>
                   <h4 style={{ margin: 0, fontSize: "1rem" }}>Jam Operasional</h4>
                   <p style={{ color: "var(--color-gray-500)", margin: 0, fontSize: "0.9375rem" }}>
-                    Selasa - Minggu: 09:00 - 18:00<br/>
+                    Selasa - Minggu: 09:00 - 18:00<br />
                     Senin: Libur
                   </p>
                 </div>
@@ -89,8 +89,8 @@ export default function KontakPage() {
 
               <a href={buildWhatsAppUrl(COMMON_MESSAGES.general)} target="_blank" rel="noopener noreferrer">
                 <Button variant="whatsapp" fullWidth style={{ border: "1px solid var(--color-whatsapp)", backgroundColor: "rgba(37, 211, 102, 0.05)" }}>
-                  <MessageCircle size={18} color="var(--color-whatsapp)" /> 
-                  <span style={{ color: "var(--color-whatsapp)"}}>Chat WhatsApp Sekarang</span>
+                  <MessageCircle size={18} color="var(--color-whatsapp)" />
+                  <span style={{ color: "var(--color-whatsapp)" }}>Chat WhatsApp Sekarang</span>
                 </Button>
               </a>
             </Card>
@@ -99,13 +99,14 @@ export default function KontakPage() {
           <ScrollReveal animation="fadeIn" delay={300}>
             <div style={{ width: "100%", height: "100%", minHeight: "400px", backgroundColor: "var(--color-gray-100)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
               {/* Dummy iframe for Map */}
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.24056230948!2d106.74100653139366!3d-6.229746430335028!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f14d30079f01%3A0x2e74f2341fff266d!2sJakarta%20Selatan%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={false} 
-                loading="lazy" 
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.0300490014847!2d106.8358724!3d-6.2597722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f30020cfea8b%3A0xf10a7172888d8f1e!2sNola%20Nail%20Art%20and%20Beauty!5e0!3m2!1sid!2sid!4v1776742893368!5m2!1sid!2sid"
+                // <iframe
+                //   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.24056230948!2d106.74100653139366!3d-6.229746430335028!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f14d30079f01%3A0x2e74f2341fff266d!2sJakarta%20Selatan%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>

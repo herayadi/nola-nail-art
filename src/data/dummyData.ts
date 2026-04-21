@@ -27,7 +27,7 @@ export const services = [
     shortDescription: "Perawatan basic yang bikin kuku terlihat sehat.",
     price: 100000,
     duration: "45 - 60 menit",
-    image: "https://images.unsplash.com/photo-1542840410-3092f99611a3?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1700760933910-d3c03aa18b65",
     isPopular: false,
     category: "Care",
     addons: [
@@ -42,11 +42,11 @@ export const services = [
 
 export const mockPortfolio = [
   { id: 1, img: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&q=80&w=600", category: "Elegant", title: "Soft Gloss" },
-  { id: 2, img: "https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&q=80&w=600", category: "Bridal", title: "Pearl White" },
-  { id: 3, img: "https://images.unsplash.com/photo-1632832961559-0a5eb57ff0e2?auto=format&fit=crop&q=80&w=600", category: "Korean", title: "Blush Ombre" },
+  { id: 2, img: "https://images.unsplash.com/photo-1591926079847-8181980b0f09?auto=format&fit=crop&q=80&w=600", category: "Bridal", title: "Pearl White" },
+  { id: 3, img: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&q=80&w=600", category: "Korean", title: "Blush Ombre" },
   { id: 4, img: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&q=80&w=600", category: "Glam", title: "Gold Flakes" },
-  { id: 5, img: "https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?auto=format&fit=crop&q=80&w=600", category: "Natural", title: "Clean Cut" },
-  { id: 6, img: "https://images.unsplash.com/photo-1595868514936-31950d6fde2e?auto=format&fit=crop&q=80&w=600", category: "Bold", title: "Deep Burgundy" }
+  { id: 5, img: "https://images.unsplash.com/photo-1735236007245-9dc6e28bbe56?auto=format&fit=crop&q=80&w=600", category: "Natural", title: "Clean Cut" },
+  { id: 6, img: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&q=80&w=600", category: "Bold", title: "Deep Burgundy" }
 ];
 
 export const faqs = [
