@@ -5,11 +5,18 @@ import { Clock, Check, MessageCircle, Calendar } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { services } from "@/data/dummyData";
+import { prisma } from "@/lib/prisma";
 import { buildWhatsAppUrl, COMMON_MESSAGES } from "@/lib/whatsapp";
 
-// Generates static paths (SSG) for all dummy services
-export function generateStaticParams() {
+// Enable ISR (Incremental Static Regeneration)
+export const revalidate = 3600; // Refetch data at most once per hour
+
+// Generates static paths (SSG) for all services in database
+export async function generateStaticParams() {
+  const services = await prisma.service.findMany({
+    select: { id: true },
+  });
+  
   return services.map((service) => ({
     slug: service.id,
   }));
@@ -21,7 +28,15 @@ export default async function ServiceDetail({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = services.find((s) => s.id === slug);
+  
+  // Fetch service with its relations
+  const service = await prisma.service.findUnique({
+    where: { id: slug },
+    include: {
+      addons: true,
+      faqs: true,
+    },
+  });
 
   if (!service) {
     notFound();

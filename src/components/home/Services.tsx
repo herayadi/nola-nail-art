@@ -4,9 +4,8 @@ import { ArrowRight, Clock } from "lucide-react";
 import styles from "./Services.module.css";
 import Card from "@/components/ui/Card";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { services } from "@/data/dummyData";
 
-export default function Services() {
+export default function Services({ services }: { services: any[] }) {
   return (
     <section className={styles.section} id="layanan">
       <div className={`container ${styles.container}`}>
@@ -14,22 +13,22 @@ export default function Services() {
           <span className={styles.eyebrow}>Layanan Kami</span>
           <h2 className={styles.title}>Perawatan Estetik Untukmu</h2>
           <p className={styles.subtitle}>
-            Setiap pengerjaan dilakukan dengan teknik detail, higienis, dan 
+            Setiap pengerjaan dilakukan dengan teknik detail, higienis, dan
             menggunakan material premium untuk hasil yang tahan lama.
           </p>
         </ScrollReveal>
 
         <div className={styles.grid}>
           {services.map((service, index) => (
-            <ScrollReveal 
-              key={service.id} 
-              animation="slideUp" 
+            <ScrollReveal
+              key={service.id}
+              animation="slideUp"
               delay={(index + 1) * 150}
             >
               <Card className={styles.card} elevated>
                 <div className={styles.imageWrapper}>
-                  <Image 
-                    src={service.image} 
+                  <Image
+                    src={service.image}
                     alt={service.name}
                     fill
                     className={styles.image}
@@ -39,7 +38,7 @@ export default function Services() {
                     <div className={styles.popularBadge}>Populer</div>
                   )}
                 </div>
-                
+
                 <div className={styles.cardContent}>
                   <div className={styles.cardMeta}>
                     <span className={styles.category}>{service.category}</span>
@@ -47,10 +46,10 @@ export default function Services() {
                       <Clock size={14} /> {service.duration}
                     </span>
                   </div>
-                  
+
                   <h3 className={styles.cardTitle}>{service.name}</h3>
                   <p className={styles.cardDesc}>{service.description}</p>
-                  
+
                   <div className={styles.cardFooter}>
                     <div className={styles.price}>
                       <span className={styles.priceLabel}>Mulai dari</span>
@@ -58,8 +57,11 @@ export default function Services() {
                         Rp {service.price.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    
-                    <Link href={`/layanan/${service.id}`} className={styles.link}>
+
+                    <Link
+                      href={`/layanan/${service.id}`}
+                      className={styles.link}
+                    >
                       <ArrowRight size={20} />
                     </Link>
                   </div>
@@ -67,7 +69,7 @@ export default function Services() {
               </Card>
             </ScrollReveal>
           ))}
-          
+
           {/* Coming Soon Card */}
           <ScrollReveal animation="slideUp" delay={450}>
             <Card className={`${styles.card} ${styles.comingSoonCard}`}>

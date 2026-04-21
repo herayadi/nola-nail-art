@@ -7,19 +7,33 @@ import Pricing from "@/components/home/Pricing";
 import Testimonials from "@/components/home/Testimonials";
 import HowToBook from "@/components/home/HowToBook";
 import FAQ from "@/components/home/FAQ";
+import { prisma } from "@/lib/prisma";
 
-export default function Home() {
+export default async function Home() {
+  const services = await prisma.service.findMany({
+    orderBy: { id: "asc" },
+  });
+  const portfolio = await prisma.portfolio.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+  const testimonials = await prisma.testimonial.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+  const faqsData = await prisma.faq.findMany({
+    where: { serviceId: null },
+  });
+
   return (
     <>
       <Hero />
       <SocialProof />
-      <Services />
-      <Portfolio />
+      <Services services={services} />
+      <Portfolio portfolio={portfolio} />
       <WhyNola />
-      <Pricing />
-      <Testimonials />
+      <Pricing services={services} />
+      <Testimonials testimonials={testimonials} />
       <HowToBook />
-      <FAQ />
+      <FAQ faqs={faqsData} />
     </>
   );
 }

@@ -5,10 +5,15 @@ import { ChevronDown, MessageCircle } from "lucide-react";
 import styles from "./FAQ.module.css";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Button from "@/components/ui/Button";
-import { faqs } from "@/data/dummyData";
 import { buildWhatsAppUrl, COMMON_MESSAGES } from "@/lib/whatsapp";
 
-export default function FAQ() {
+interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export default function FAQ({ faqs }: { faqs: FaqItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0); // First item open by default
 
   const toggleAccordion = (index: number) => {

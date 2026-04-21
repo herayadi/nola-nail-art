@@ -4,33 +4,10 @@ import styles from "./Pricing.module.css";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Button from "@/components/ui/Button";
 
-export default function Pricing() {
-  const packages = [
-    {
-      id: "everyday",
-      name: "Everyday Nails",
-      price: "75.000",
-      description: "Tampil bersih dan rapi untuk keseharianmu.",
-      features: ["Basic Manicure", "Nail Shaping", "1 Warna Solid Gel Polish", "Vitamin Oil", "Pengerjaan 1 jam"],
-      isPopular: false
-    },
-    {
-      id: "signature",
-      name: "Signature Nail Art",
-      price: "150.000",
-      description: "Lebih berekspresi dengan desain favoritmu.",
-      features: ["Premium Manicure", "Free Custom Desain Dasar", "3+ Warna Gel Polish", "Aksesori / Chrome Standar", "Pengerjaan 1.5 - 2 jam"],
-      isPopular: true
-    },
-    {
-      id: "bridal",
-      name: "Bridal Glam",
-      price: "300.000",
-      description: "Kuku showstopper untuk momen terindah.",
-      features: ["Semua di Signature Package", "Premium 3D Accessories", "Swarovski / Mutiara", "Cuticle Spa Scrub", "Pengerjaan 3 jam"],
-      isPopular: false
-    }
-  ];
+export default function Pricing({ services }: { services: any[] }) {
+  // We'll take the top 3 services to show as "Packages" on the homepage
+  // or just show all if there are only few.
+  const displayServices = services.slice(0, 3);
 
   return (
     <section className={styles.section} id="harga">
@@ -45,44 +22,53 @@ export default function Pricing() {
         </ScrollReveal>
 
         <div className={styles.grid}>
-          {packages.map((pkg, index) => (
+          {displayServices.map((service, index) => (
             <ScrollReveal 
-              key={pkg.id} 
+              key={service.id} 
               animation="slideUp" 
               delay={index * 150}
               className={styles.cardWrapper}
             >
-              <div className={`${styles.card} ${pkg.isPopular ? styles.popularCard : ""}`}>
-                {pkg.isPopular && (
+              <div className={`${styles.card} ${service.isPopular ? styles.popularCard : ""}`}>
+                {service.isPopular && (
                   <div className={styles.popularBadge}>Paling Diminati</div>
                 )}
                 
-                <h3 className={styles.pkgName}>{pkg.name}</h3>
-                <p className={styles.pkgDesc}>{pkg.description}</p>
+                <h3 className={styles.pkgName}>{service.name}</h3>
+                <p className={styles.pkgDesc}>{service.description}</p>
                 
                 <div className={styles.priceContainer}>
                   <span className={styles.currency}>Rp</span>
-                  <span className={styles.amount}>{pkg.price}</span>
+                  <span className={styles.amount}>{service.price.toLocaleString("id-ID")}</span>
                 </div>
                 
                 <div className={styles.divider}></div>
                 
                 <ul className={styles.featureList}>
-                  {pkg.features.map((feat, i) => (
-                    <li key={i}>
+                  {/* Since we don't have features array in DB, we use shortDescription or duration */}
+                  <li>
+                    <Check size={18} className={styles.checkIcon} />
+                    <span>Estimasi {service.duration}</span>
+                  </li>
+                  {service.shortDescription && (
+                    <li>
                       <Check size={18} className={styles.checkIcon} />
-                      <span>{feat}</span>
+                      <span>{service.shortDescription}</span>
                     </li>
-                  ))}
+                  )}
+                  <li>
+                    <Check size={18} className={styles.checkIcon} />
+                    <span>Bahan Premium & Higienis</span>
+                  </li>
                 </ul>
                 
                 <div className={styles.cardFooter}>
-                  <Link href="/booking" style={{ width: '100%' }}>
+                  <Link href={`/layanan/${service.id}`} style={{ width: '100%' }}>
                     <Button 
                       fullWidth 
-                      variant={pkg.isPopular ? "primary" : "ghost"}
+                      variant={service.isPopular ? "primary" : "ghost"}
                     >
-                      Pilih Paket
+                      Lihat Detail
                     </Button>
                   </Link>
                 </div>
