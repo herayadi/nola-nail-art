@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { prisma } from "./client";           // ← Import dari client.ts
+import { prisma } from "../src/lib/prisma";           // ← Menggunakan central prisma di src/lib
 import { services, mockPortfolio, testimonials, faqs } from '../src/data/dummyData'
 
 console.log("ENV:", process.env.DATABASE_URL);
