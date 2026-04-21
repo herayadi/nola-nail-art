@@ -1,14 +1,22 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import path from "path";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
     throw new Error("DATABASE_URL is not defined");
 }
 
+// Ensure the path is absolute for the adapter
+const dbPath = connectionString.replace("file:", "");
+const absoluteDbPath = path.isAbsolute(dbPath) 
+    ? dbPath 
+    : path.join(process.cwd(), dbPath);
+
+// The adapter expects an object with a 'url' property, not a database instance
 const adapter = new PrismaBetterSqlite3({
-    url: connectionString,
+    url: `file:${absoluteDbPath}`,
 });
 
 const globalForPrisma = globalThis as unknown as {

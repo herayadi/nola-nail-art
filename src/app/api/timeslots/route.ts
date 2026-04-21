@@ -12,7 +12,7 @@ export async function GET() {
   } catch (error) {
     console.error("Error fetching time slots:", error);
     return NextResponse.json(
-      { error: "Gagal mengambil data slot waktu" },
+      { error: "Gagal mengambil data slot waktu", details: (error as Error).message },
       { status: 500 }
     );
   }

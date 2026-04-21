@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Check, ArrowRight, ArrowLeft, Calendar as CalendarIcon, Clock, Lock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Check, ArrowRight, ArrowLeft, Calendar as CalendarIcon, Clock, Lock, Loader2 } from "lucide-react";
 import styles from "./BookingWizard.module.css";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { services } from "@/data/dummyData";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 // Steps definition
@@ -15,6 +14,13 @@ const STEPS = ["Layanan", "Add-on", "Jadwal", "Data Diri", "Konfirmasi"];
 export default function BookingWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   
+  // Data State from API
+  const [services, setServices] = useState<any[]>([]);
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   // State for Booking Data
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
@@ -25,6 +31,32 @@ export default function BookingWizard() {
     phone: "",
     notes: ""
   });
+
+  // Fetch Services & TimeSlots
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const [resServices, resSlots] = await Promise.all([
+          fetch("/api/services"),
+          fetch("/api/timeslots")
+        ]);
+
+        const dataServices = await resServices.json();
+        const dataSlots = await resSlots.json();
+
+        if (resServices.ok) setServices(dataServices);
+        if (resSlots.ok) setAvailableTimeSlots(dataSlots);
+      } catch (err) {
+        console.error("Failed to fetch data:", err);
+        setError("Gagal memuat data. Silakan coba lagi nanti.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Derived state
   const selectedService = services.find(s => s.id === selectedServiceId);
@@ -54,64 +86,115 @@ export default function BookingWizard() {
     );
   };
 
-  const handleConfirm = () => {
-    // Build summary message
-    const lines = [
-      `Halo Nola Nail Art! Saya ingin konfirmasi booking:`,
-      ``,
-      `*Nama:* ${customerData.name}`,
-      `*Layanan:* ${selectedService?.name}`,
-      `*Add-on:* ${selectedAddons.length > 0 ? availableAddons.filter(a => selectedAddons.includes(a.id)).map(a => a.name).join(", ") : "-"}`,
-      `*Tanggal:* ${selectedDate}`,
-      `*Jam:* ${selectedTime}`,
-      `*Catatan:* ${customerData.notes || "-"}`,
-      ``,
-      `*Estimasi Total:* Rp ${totalPrice.toLocaleString("id-ID")}`
-    ];
-    
-    const message = lines.join('\n');
-    const waUrl = buildWhatsAppUrl(message);
-    
-    // Redirect to WhatsApp
-    window.open(waUrl, '_blank');
+  const handleConfirm = async () => {
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      // 1. Save to database
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: customerData.name,
+          customerPhone: customerData.phone,
+          customerNotes: customerData.notes,
+          selectedDate,
+          timeSlot: selectedTime,
+          totalPrice,
+          serviceId: selectedServiceId,
+          addonIds: selectedAddons,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Gagal menyimpan pesanan ke database.");
+      }
+
+      // 2. Build summary message for WhatsApp
+      const lines = [
+        `Halo Nola Nail Art! Saya ingin konfirmasi booking:`,
+        ``,
+        `*Nama:* ${customerData.name}`,
+        `*Layanan:* ${selectedService?.name}`,
+        `*Add-on:* ${selectedAddons.length > 0 ? availableAddons.filter(a => selectedAddons.includes(a.id)).map(a => a.name).join(", ") : "-"}`,
+        `*Tanggal:* ${selectedDate}`,
+        `*Jam:* ${selectedTime}`,
+        `*Catatan:* ${customerData.notes || "-"}`,
+        ``,
+        `*Estimasi Total:* Rp ${totalPrice.toLocaleString("id-ID")}`
+      ];
+      
+      const message = lines.join('\n');
+      const waUrl = buildWhatsAppUrl(message);
+      
+      // 3. Redirect to WhatsApp
+      window.open(waUrl, '_blank');
+      
+      // Optional: Redirect to success page or reset state
+    } catch (err: any) {
+      setError(err.message || "Terjadi kesalahan saat memproses pesanan.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   // ---------------------------------------------------------
   // RENDER: STEP 1 - Services
   // ---------------------------------------------------------
-  const renderStep1 = () => (
-    <div className={styles.stepContent}>
-      <h2 className={styles.stepTitle}>Pilih Layanan</h2>
-      <p className={styles.stepDesc}>Pilih perawatan yang kamu inginkan.</p>
-      
-      <div className={styles.servicesGrid}>
-        {services.map(service => (
-          <div 
-            key={service.id}
-            className={`${styles.selectCard} ${selectedServiceId === service.id ? styles.selectedCard : ""}`}
-            onClick={() => handleServiceSelect(service.id)}
-          >
-            <div className={styles.cardHeader}>
-              <h3 className={styles.serviceName}>{service.name}</h3>
-              <div className={styles.radioOutline}>
-                {selectedServiceId === service.id && <div className={styles.radioDot} />}
+  const renderStep1 = () => {
+    if (loading) {
+      return (
+        <div className={styles.loadingState}>
+          <Loader2 className={styles.spinner} />
+          <p>Memuat daftar layanan...</p>
+        </div>
+      );
+    }
+
+    if (error && services.length === 0) {
+      return (
+        <div className={styles.errorState}>
+          <p>{error}</p>
+          <Button onClick={() => window.location.reload()}>Coba Lagi</Button>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.stepContent}>
+        <h2 className={styles.stepTitle}>Pilih Layanan</h2>
+        <p className={styles.stepDesc}>Pilih perawatan yang kamu inginkan.</p>
+        
+        <div className={styles.servicesGrid}>
+          {services.map(service => (
+            <div 
+              key={service.id}
+              className={`${styles.selectCard} ${selectedServiceId === service.id ? styles.selectedCard : ""}`}
+              onClick={() => handleServiceSelect(service.id)}
+            >
+              <div className={styles.cardHeader}>
+                <h3 className={styles.serviceName}>{service.name}</h3>
+                <div className={styles.radioOutline}>
+                  {selectedServiceId === service.id && <div className={styles.radioDot} />}
+                </div>
               </div>
+              <p className={styles.serviceMeta}>
+                {service.duration} • Rp {service.price.toLocaleString("id-ID")}
+              </p>
             </div>
-            <p className={styles.serviceMeta}>
-              {service.duration} • Rp {service.price.toLocaleString("id-ID")}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
+        
+        <div className={styles.navButtons}>
+          <div /> {/* spacing */}
+          <Button onClick={nextStep} disabled={!selectedServiceId} className={styles.nextBtn}>
+            Lanjut <ArrowRight size={16} />
+          </Button>
+        </div>
       </div>
-      
-      <div className={styles.navButtons}>
-        <div /> {/* spacing */}
-        <Button onClick={nextStep} disabled={!selectedServiceId} className={styles.nextBtn}>
-          Lanjut <ArrowRight size={16} />
-        </Button>
-      </div>
-    </div>
-  );
+    );
+  };
 
   // ---------------------------------------------------------
   // RENDER: STEP 2 - Add-ons
@@ -175,15 +258,18 @@ export default function BookingWizard() {
       <div className={styles.formGroup}>
         <label className={styles.label}><Clock size={16}/> Waktu Tersedia</label>
         <div className={styles.timeGrid}>
-          {["09:00", "10:30", "13:00", "15:00", "16:30"].map(time => (
+          {availableTimeSlots.map(slot => (
             <div 
-              key={time}
-              className={`${styles.timeSlot} ${selectedTime === time ? styles.selectedTime : ""}`}
-              onClick={() => setSelectedTime(time)}
+              key={slot.id}
+              className={`${styles.timeSlot} ${selectedTime === slot.time ? styles.selectedTime : ""}`}
+              onClick={() => setSelectedTime(slot.time)}
             >
-              {time}
+              {slot.time}
             </div>
           ))}
+          {availableTimeSlots.length === 0 && !loading && (
+            <p className={styles.emptyText}>Tidak ada jadwal tersedia.</p>
+          )}
         </div>
       </div>
       
@@ -288,10 +374,28 @@ export default function BookingWizard() {
         <Lock size={14}/> <span>Setelah konfirmasi, pesanan ini akan diarahkan ke WhatsApp untuk verifikasi final dan info deposit.</span>
       </div>
       
+      {error && (
+        <div className={styles.errorMessage} style={{ color: 'red', marginBottom: '1rem', fontSize: '0.875rem', textAlign: 'center' }}>
+          {error}
+        </div>
+      )}
+
       <div className={styles.navButtons}>
-        <Button variant="ghost" onClick={prevStep}><ArrowLeft size={16} /> Ubah</Button>
-        <Button variant="primary" onClick={handleConfirm} fullWidth className={styles.confirmBtn}>
-          Booking via WhatsApp
+        <Button variant="ghost" onClick={prevStep} disabled={submitting}><ArrowLeft size={16} /> Ubah</Button>
+        <Button 
+          variant="primary" 
+          onClick={handleConfirm} 
+          fullWidth 
+          className={styles.confirmBtn}
+          disabled={submitting}
+        >
+          {submitting ? (
+            <>
+              <Loader2 className={styles.spinner} /> Memproses...
+            </>
+          ) : (
+            "Booking via WhatsApp"
+          )}
         </Button>
       </div>
     </div>

@@ -23,12 +23,12 @@ CREATE TABLE "Addon" (
 );
 
 -- CreateTable
-CREATE TABLE "faq" (
+CREATE TABLE "Faq" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "question" TEXT NOT NULL,
     "answer" TEXT NOT NULL,
     "serviceId" TEXT,
-    CONSTRAINT "faq" FOREIGN KEY ("serviceId") REFERENCES "Service" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "Faq_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Service" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -75,6 +75,14 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "name" TEXT,
     "role" TEXT NOT NULL DEFAULT 'ADMIN'
+);
+
+-- CreateTable
+CREATE TABLE "TimeSlot" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "time" TEXT NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateIndex

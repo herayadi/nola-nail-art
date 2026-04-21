@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const services = await prisma.service.findMany({
+      include: { addons: true },
       orderBy: { id: "asc" },
     });
 
