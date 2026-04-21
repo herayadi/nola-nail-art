@@ -21,7 +21,7 @@ model Service {
   category         String
   
   addons           Addon[]
-  faqs             faq[]
+  faqs             Faq[]
   bookings         Booking[]
 
   createdAt        DateTime @default(now())
@@ -92,4 +92,11 @@ model User {
   password  String   
   name      String?
   role      String   @default("ADMIN")
+}
+
+model TimeSlot {
+  id        String   @id @default(cuid())
+  time      String   // e.g. "09:00"
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
 }

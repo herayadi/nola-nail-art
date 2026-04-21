@@ -13,6 +13,7 @@ async function main() {
   await prisma.service.deleteMany()
   await prisma.portfolio.deleteMany()
   await prisma.testimonial.deleteMany()
+  await prisma.timeSlot.deleteMany()
 
   console.log('🧹 Tabel sudah dibersihkan.')
 
@@ -81,7 +82,15 @@ async function main() {
       }
     })
   }
-  console.log(`✅ Berhasil seeding ${services.length} Layanan + Addons + FAQs`)
+
+  // 6. Time Slots (New)
+  const slots = ["09:00", "10:30", "13:00", "15:00", "16:30", "18:00"]
+  for (const slot of slots) {
+    await prisma.timeSlot.create({
+      data: { time: slot }
+    })
+  }
+  console.log(`✅ Berhasil seeding ${slots.length} Time Slots`)
 
   console.log('🎉 Seeding database SQLite selesai!')
 }
