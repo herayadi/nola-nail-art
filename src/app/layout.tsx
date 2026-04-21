@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FloatingCTA from "@/components/layout/FloatingCTA";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
         <main style={{ minHeight: "100vh" }}>{children}</main>
         <FloatingCTA />
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   );
