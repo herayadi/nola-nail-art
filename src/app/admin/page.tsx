@@ -1,14 +1,14 @@
 import { prisma } from "@/lib/prisma";
-import { 
-  Calendar, 
-  Clock, 
-  TrendingUp, 
-  Users, 
-  DollarSign, 
+import {
+  Calendar,
+  Clock,
+  TrendingUp,
+  Users,
+  DollarSign,
   ChevronRight,
   User,
   Zap,
-  Star
+  Star,
 } from "lucide-react";
 import Link from "next/link";
 import styles from "./dashboard.module.css";
@@ -20,7 +20,7 @@ export default async function AdminDashboard() {
     pendingBookings,
     totalRevenue,
     totalCustomers,
-    recentBookings
+    recentBookings,
   ] = await Promise.all([
     prisma.booking.count(),
     prisma.booking.count({ where: { status: "PENDING" } }),
@@ -29,8 +29,8 @@ export default async function AdminDashboard() {
     prisma.booking.findMany({
       take: 5,
       orderBy: { createdAt: "desc" },
-      include: { service: true }
-    })
+      include: { service: true },
+    }),
   ]);
 
   const chartData = [
@@ -47,7 +47,9 @@ export default async function AdminDashboard() {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>Studio Analytics</h1>
-        <p className={styles.subtitle}>Welcome back, Curator. Here's your studio's performance pulse.</p>
+        <p className={styles.subtitle}>
+          Welcome back, Curator. Here's your studio's performance pulse.
+        </p>
       </header>
 
       {/* Stats Cards */}
@@ -55,18 +57,27 @@ export default async function AdminDashboard() {
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
             <span className={styles.statLabel}>Total Engagements</span>
-            <div className={styles.statIcon}><Calendar size={20} /></div>
+            <div className={styles.statIcon}>
+              <Calendar size={20} />
+            </div>
           </div>
           <div className={styles.statValue}>{totalBookings}</div>
           <div className={`${styles.statTrend} ${styles.trendUp}`}>
-            <TrendingUp size={14} /> +12.5% <span className="text-gray-600 ml-1">vs last month</span>
+            <TrendingUp size={14} /> +12.5%{" "}
+            <span className="text-gray-600 ml-1">vs last month</span>
           </div>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
             <span className={styles.statLabel}>Awaiting Confirmation</span>
-            <div className={styles.statIcon} style={{ backgroundColor: 'rgba(224, 168, 32, 0.1)', color: '#E0A820' }}>
+            <div
+              className={styles.statIcon}
+              style={{
+                backgroundColor: "rgba(224, 168, 32, 0.1)",
+                color: "#E0A820",
+              }}
+            >
               <Clock size={20} />
             </div>
           </div>
@@ -79,7 +90,13 @@ export default async function AdminDashboard() {
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
             <span className={styles.statLabel}>Gross Revenue</span>
-            <div className={styles.statIcon} style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}>
+            <div
+              className={styles.statIcon}
+              style={{
+                backgroundColor: "rgba(34, 197, 94, 0.1)",
+                color: "#22C55E",
+              }}
+            >
               <DollarSign size={20} />
             </div>
           </div>
@@ -87,14 +104,21 @@ export default async function AdminDashboard() {
             Rp {(totalRevenue._sum.totalPrice || 0).toLocaleString("id-ID")}
           </div>
           <div className={`${styles.statTrend} ${styles.trendUp}`}>
-            <TrendingUp size={14} /> +8.4% <span className="text-gray-600 ml-1">Profitability index</span>
+            <TrendingUp size={14} /> +8.4%{" "}
+            <span className="text-gray-600 ml-1">Profitability index</span>
           </div>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
             <span className={styles.statLabel}>Total Universe</span>
-            <div className={styles.statIcon} style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', color: '#3B82F6' }}>
+            <div
+              className={styles.statIcon}
+              style={{
+                backgroundColor: "rgba(59, 130, 246, 0.1)",
+                color: "#3B82F6",
+              }}
+            >
               <Users size={20} />
             </div>
           </div>
@@ -110,14 +134,16 @@ export default async function AdminDashboard() {
         <section className={styles.section}>
           <div className={styles.sectionTitle}>
             Weekly Activity Cycle
-            <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full">Booking Density</span>
+            <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full">
+              Booking Density
+            </span>
           </div>
-          
+
           <div className={styles.chartContainer}>
             {chartData.map((item) => (
               <div key={item.day} className={styles.chartBarWrapper}>
-                <div 
-                  className={styles.bar} 
+                <div
+                  className={styles.bar}
                   style={{ height: `${(item.value / 150) * 100}%` }}
                 >
                   <span className={styles.barValue}>{item.value}</span>
@@ -132,7 +158,10 @@ export default async function AdminDashboard() {
         <section className={styles.section}>
           <div className={styles.sectionTitle}>
             Recent Sessions
-            <Link href="/admin/bookings" className="text-accent hover:underline text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+            <Link
+              href="/admin/bookings"
+              className="text-accent hover:underline text-[10px] font-black uppercase tracking-widest flex items-center gap-1"
+            >
               ALL LOGS <ChevronRight size={12} />
             </Link>
           </div>
@@ -144,19 +173,26 @@ export default async function AdminDashboard() {
                 <p className="text-xs">No recent sessions recorded.</p>
               </div>
             ) : (
-              recentBookings.map((booking) => (
+              recentBookings.map((booking: any) => (
                 <div key={booking.id} className={styles.recentItem}>
                   <div className={styles.itemAvatar}>
                     <User size={18} />
                   </div>
                   <div className={styles.itemInfo}>
-                    <div className={styles.itemName}>{booking.customerName}</div>
-                    <div className={styles.itemDesc}>{booking.service.name} • {booking.timeSlot}</div>
+                    <div className={styles.itemName}>
+                      {booking.customerName}
+                    </div>
+                    <div className={styles.itemDesc}>
+                      {booking.service.name} • {booking.timeSlot}
+                    </div>
                   </div>
-                  <Badge 
+                  <Badge
                     variant={
-                      booking.status === "PENDING" ? "warning" : 
-                      booking.status === "CONFIRMED" ? "info" : "success"
+                      booking.status === "PENDING"
+                        ? "warning"
+                        : booking.status === "CONFIRMED"
+                          ? "info"
+                          : "success"
                     }
                     className="text-[10px] px-2"
                   >

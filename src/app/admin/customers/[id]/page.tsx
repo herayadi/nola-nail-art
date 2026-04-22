@@ -1,18 +1,18 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { 
-  User, 
-  Phone, 
-  Mail, 
-  Calendar, 
-  CreditCard, 
+import {
+  User,
+  Phone,
+  Mail,
+  Calendar,
+  CreditCard,
   FileText,
   ArrowLeft,
   Sparkles,
   MessageCircle,
   History,
   TrendingUp,
-  MapPin
+  MapPin,
 } from "lucide-react";
 import Link from "next/link";
 import styles from "../customers.module.css";
@@ -31,9 +31,9 @@ export default async function CustomerDetailPage({
     include: {
       bookings: {
         include: { service: true },
-        orderBy: { createdAt: "desc" }
-      }
-    }
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 
   if (!customer) {
@@ -42,8 +42,15 @@ export default async function CustomerDetailPage({
 
   return (
     <div className={styles.container}>
-      <Link href="/admin/customers" className="flex items-center gap-2 text-gray-500 hover:text-white mb-10 transition-all group">
-        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Database
+      <Link
+        href="/admin/customers"
+        className="flex items-center gap-2 text-gray-500 hover:text-white mb-10 transition-all group"
+      >
+        <ArrowLeft
+          size={16}
+          className="group-hover:-translate-x-1 transition-transform"
+        />{" "}
+        Back to Database
       </Link>
 
       <div className={styles.detailGrid}>
@@ -53,9 +60,11 @@ export default async function CustomerDetailPage({
             <div className={styles.largeAvatar}>
               <User size={56} />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">{customer.name}</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              {customer.name}
+            </h1>
             <div className={styles.vipBadge}>VIP STUDIO MEMBER</div>
-            
+
             <div className={styles.infoList}>
               <div className={styles.infoItem}>
                 <Phone size={18} />
@@ -67,7 +76,13 @@ export default async function CustomerDetailPage({
               </div>
               <div className={styles.infoItem}>
                 <Calendar size={18} />
-                <span>Since {new Date(customer.createdAt).toLocaleDateString("en-US", { month: 'long', year: 'numeric' })}</span>
+                <span>
+                  Since{" "}
+                  {new Date(customer.createdAt).toLocaleDateString("en-US", {
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </span>
               </div>
               <div className={styles.infoItem}>
                 <MapPin size={18} />
@@ -77,20 +92,28 @@ export default async function CustomerDetailPage({
 
             <div className="grid grid-cols-2 gap-4 mt-10">
               <div className="bg-admin-bg/50 p-5 rounded-2xl border border-admin-border shadow-inner">
-                <div className="text-[10px] text-gray-500 uppercase font-bold mb-1 tracking-widest">Total Visits</div>
+                <div className="text-[10px] text-gray-500 uppercase font-bold mb-1 tracking-widest">
+                  Total Visits
+                </div>
                 <div className="text-2xl font-bold text-white flex items-center justify-center gap-2">
                   {customer.totalBookings}
                   <TrendingUp size={14} className="text-success" />
                 </div>
               </div>
               <div className="bg-admin-bg/50 p-5 rounded-2xl border border-admin-border shadow-inner">
-                <div className="text-[10px] text-gray-500 uppercase font-bold mb-1 tracking-widest">Lifetime Value</div>
-                <div className="text-xl font-bold text-accent">Rp {customer.totalSpent.toLocaleString("id-ID")}</div>
+                <div className="text-[10px] text-gray-500 uppercase font-bold mb-1 tracking-widest">
+                  Lifetime Value
+                </div>
+                <div className="text-xl font-bold text-accent">
+                  Rp {customer.totalSpent.toLocaleString("id-ID")}
+                </div>
               </div>
             </div>
 
-            <a 
-              href={buildWhatsAppUrl(`Halo ${customer.name}, ini dari Nola Nail Art...`)}
+            <a
+              href={buildWhatsAppUrl(
+                `Halo ${customer.name}, ini dari Nola Nail Art...`,
+              )}
               target="_blank"
               className="block mt-8"
             >
@@ -105,7 +128,10 @@ export default async function CustomerDetailPage({
               <FileText size={14} /> Internal Dossier
             </h3>
             <div className="p-4 bg-admin-bg/30 rounded-xl border border-white/5 italic text-sm text-gray-300 leading-relaxed">
-              "{customer.internalNotes || "No internal dossiers recorded for this client yet. Maintain professional context here."}"
+              "
+              {customer.internalNotes ||
+                "No internal dossiers recorded for this client yet. Maintain professional context here."}
+              "
             </div>
           </div>
         </div>
@@ -129,7 +155,7 @@ export default async function CustomerDetailPage({
                 <p>No historical service data found.</p>
               </div>
             ) : (
-              customer.bookings.map((booking) => (
+              customer.bookings.map((booking: any) => (
                 <div key={booking.id} className={styles.historyItem}>
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-4">
@@ -137,26 +163,53 @@ export default async function CustomerDetailPage({
                         <Sparkles size={20} className="text-accent" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-lg text-white">{booking.service.name}</h4>
+                        <h4 className="font-bold text-lg text-white">
+                          {booking.service.name}
+                        </h4>
                         <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
                           <Calendar size={12} />
-                          {new Date(booking.selectedDate).toLocaleDateString("en-US", { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
+                          {new Date(booking.selectedDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              weekday: "short",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            },
+                          )}
                           <span className="text-gray-700">|</span>
-                          <span className="text-accent font-medium">{booking.timeSlot}</span>
+                          <span className="text-accent font-medium">
+                            {booking.timeSlot}
+                          </span>
                         </div>
                       </div>
                     </div>
-                    <Badge variant={booking.status === "COMPLETED" ? "success" : booking.status === "CANCELLED" ? "error" : "warning"} className="text-[10px] px-3">
+                    <Badge
+                      variant={
+                        booking.status === "COMPLETED"
+                          ? "success"
+                          : booking.status === "CANCELLED"
+                            ? "error"
+                            : "warning"
+                      }
+                      className="text-[10px] px-3"
+                    >
                       {booking.status}
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center text-sm pt-4 border-t border-white/5">
                     <div className="flex items-center gap-2">
                       <CreditCard size={14} className="text-gray-500" />
-                      <span className="text-gray-400 font-bold">Rp {booking.totalPrice.toLocaleString("id-ID")}</span>
+                      <span className="text-gray-400 font-bold">
+                        Rp {booking.totalPrice.toLocaleString("id-ID")}
+                      </span>
                     </div>
-                    <Link href={`/admin/bookings/${booking.id}`} className="text-accent text-[10px] font-black uppercase tracking-widest hover:underline flex items-center gap-1">
-                      Inspect Record <ArrowLeft size={10} className="rotate-180" />
+                    <Link
+                      href={`/admin/bookings/${booking.id}`}
+                      className="text-accent text-[10px] font-black uppercase tracking-widest hover:underline flex items-center gap-1"
+                    >
+                      Inspect Record{" "}
+                      <ArrowLeft size={10} className="rotate-180" />
                     </Link>
                   </div>
                 </div>
