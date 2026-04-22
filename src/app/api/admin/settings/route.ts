@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // Process all keys in the body
-    const updates = Object.entries(body).map(([key, value]) => {
+    const updates = Object.entries(body).map(([key, value]: [string, any]) => {
       return prisma.setting.upsert({
         where: { key },
         update: { value: String(value) },

@@ -8,23 +8,23 @@ export default function WhyNola() {
     {
       title: "Hygienic",
       desc: "Kebersihan dan sterilisasi alat sebelum & sesudah penggunaan adalah prioritas utama standar studio kami.",
-      icon: <ShieldCheck size={28} />
+      icon: <ShieldCheck size={28} />,
     },
     {
       title: "Detail & Presisi",
       desc: "Setiap garis dan detail nail art dikerjakan sekecil mungkin menggunakan brush presisi oleh teknisi berpengalaman.",
-      icon: <Sparkles size={28} />
+      icon: <Sparkles size={28} />,
     },
     {
       title: "Custom Design",
       desc: "Kebebasan untuk berkonsultasi dan memilih desain sesuai gambar inspirasi kamu sendiri.",
-      icon: <Palette size={28} />
+      icon: <Palette size={28} />,
     },
     {
       title: "Premium Products",
       desc: "Hanya menggunakan cat kuku import, top coat berkualitas, dan aksesori berkilau agar manikur tahan lama.",
-      icon: <Gem size={28} />
-    }
+      icon: <Gem size={28} />,
+    },
   ];
 
   return (
@@ -36,9 +36,10 @@ export default function WhyNola() {
               <span className={styles.eyebrow}>Kenapa Pilih Nola?</span>
               <h2 className={styles.title}>Beauty in Every Detail</h2>
               <p className={styles.description}>
-                Kami percaya kuku adalah kanvas terkecil yang bisa mengekspresikan karaktermu. 
-                Di Nola Nail Art & Beauty, bukan sekadar layanan memoles kuku, tapi kami 
-                menawarkan sesi bersantai sambil tanganmu dipercantik tanpa kompromi kualitas.
+                Kami percaya kuku adalah kanvas terkecil yang bisa
+                mengekspresikan karaktermu. Di Nola Nail Art & Beauty, bukan
+                sekadar layanan memoles kuku, tapi kami menawarkan sesi
+                bersantai sambil tanganmu dipercantik tanpa kompromi kualitas.
               </p>
               <ul className={styles.list}>
                 <li>Konsultasi personal</li>
@@ -47,11 +48,11 @@ export default function WhyNola() {
               </ul>
             </ScrollReveal>
           </div>
-          
+
           <div className={styles.cardsCol}>
             <div className={styles.cardsGrid}>
-              {features.map((feat, index) => (
-                <ScrollReveal 
+              {features.map((feat: any, index: number) => (
+                <ScrollReveal
                   key={index}
                   animation="slideUp"
                   delay={index * 150}

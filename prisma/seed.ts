@@ -76,14 +76,14 @@ async function main() {
         isPopular: s.isPopular || false,
         addons: {
           create:
-            s.addons?.map((a) => ({
+            s.addons?.map((a: any) => ({
               name: a.name,
               price: a.price,
             })) || [],
         },
         faqs: {
           create:
-            s.faqs?.map((f) => ({
+            s.faqs?.map((f: any) => ({
               question: f.question,
               answer: f.answer,
             })) || [],

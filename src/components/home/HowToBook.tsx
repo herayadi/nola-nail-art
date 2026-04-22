@@ -9,18 +9,18 @@ export default function HowToBook() {
     {
       num: "01",
       title: "Pilih Layanan",
-      desc: "Tentukan treatment yang kamu butuhkan, mulai dari basic perawatan kuku sampai custom art."
+      desc: "Tentukan treatment yang kamu butuhkan, mulai dari basic perawatan kuku sampai custom art.",
     },
     {
       num: "02",
       title: "Pilih Jadwal",
-      desc: "Pilih tanggal dan jam yang tersedia. Sangat disarankan booking dari jauh-jauh hari agar slot aman."
+      desc: "Pilih tanggal dan jam yang tersedia. Sangat disarankan booking dari jauh-jauh hari agar slot aman.",
     },
     {
       num: "03",
       title: "Konfirmasi & DP",
-      desc: "Lakukan konfirmasi pemesanan dan pembayaran down payment (DP) via WhatsApp resmi kami."
-    }
+      desc: "Lakukan konfirmasi pemesanan dan pembayaran down payment (DP) via WhatsApp resmi kami.",
+    },
   ];
 
   return (
@@ -35,10 +35,10 @@ export default function HowToBook() {
         </ScrollReveal>
 
         <div className={styles.stepsContainer}>
-          {steps.map((step, index) => (
-            <ScrollReveal 
-              key={index} 
-              animation="fadeIn" 
+          {steps.map((step: any, index: number) => (
+            <ScrollReveal
+              key={index}
+              animation="fadeIn"
               delay={index * 200}
               className={styles.stepItem}
             >
@@ -47,7 +47,7 @@ export default function HowToBook() {
               </div>
               <h3 className={styles.stepTitle}>{step.title}</h3>
               <p className={styles.stepDesc}>{step.desc}</p>
-              
+
               {/* Add line connector except for the last item */}
               {index < steps.length - 1 && (
                 <div className={styles.connector}>
@@ -58,7 +58,11 @@ export default function HowToBook() {
           ))}
         </div>
 
-        <ScrollReveal animation="slideUp" delay={600} className={styles.ctaWrapper}>
+        <ScrollReveal
+          animation="slideUp"
+          delay={600}
+          className={styles.ctaWrapper}
+        >
           <Link href="/booking">
             <Button size="lg" className={styles.btnShadow}>
               Mulai Booking Sekarang
@@ -66,7 +70,8 @@ export default function HowToBook() {
             </Button>
           </Link>
           <p className={styles.urgencyText}>
-            "Slot terbatas per hari. Booking lebih dulu untuk memastikan jadwal kamu aman."
+            "Slot terbatas per hari. Booking lebih dulu untuk memastikan jadwal
+            kamu aman."
           </p>
         </ScrollReveal>
       </div>

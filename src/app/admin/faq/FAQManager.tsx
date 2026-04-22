@@ -97,7 +97,7 @@ export default function FAQManager({ initialFaqs, services }: FAQManagerProps) {
       if (res.ok) {
         const updated = await res.json();
         if (editFaq) {
-          setFaqs(faqs.map((f) => (f.id === updated.id ? updated : f)));
+          setFaqs(faqs.map((f: any) => (f.id === updated.id ? updated : f)));
         } else {
           setFaqs([...faqs, updated].sort((a, b) => a.sortOrder - b.sortOrder));
         }

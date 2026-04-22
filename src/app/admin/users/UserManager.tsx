@@ -100,7 +100,7 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
 
       const updated = await res.json();
       if (editUser) {
-        setUsers(users.map((u) => (u.id === updated.id ? updated : u)));
+        setUsers(users.map((u: any) => (u.id === updated.id ? updated : u)));
       } else {
         setUsers([...users, updated]);
       }

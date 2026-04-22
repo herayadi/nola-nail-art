@@ -9,7 +9,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 export default function Portfolio({ portfolio }: { portfolio: any[] }) {
   const categories = [
     "All",
-    ...Array.from(new Set(portfolio.map((item) => item.category))),
+    ...Array.from(new Set(portfolio.map((item: any) => item.category))),
   ];
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -47,7 +47,7 @@ export default function Portfolio({ portfolio }: { portfolio: any[] }) {
 
         {/* Grid/Masonry Layout */}
         <div className={styles.grid}>
-          {filteredItems.map((item, index) => (
+          {filteredItems.map((item: any, index: number) => (
             <ScrollReveal
               key={item.id}
               animation="slideUp"

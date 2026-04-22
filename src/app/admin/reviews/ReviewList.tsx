@@ -48,7 +48,7 @@ export default function ReviewList({ initialReviews }: ReviewListProps) {
 
         if (res.ok) {
           const updated = await res.json();
-          setReviews(reviews.map((r) => (r.id === id ? updated : r)));
+          setReviews(reviews.map((r: any) => (r.id === id ? updated : r)));
         }
       }
       router.refresh();
@@ -84,7 +84,7 @@ export default function ReviewList({ initialReviews }: ReviewListProps) {
               </div>
             </div>
             <div className={styles.rating}>
-              {[...Array(5)].map((_, i) => (
+              {[...Array(5)].map((_: any, i: number) => (
                 <Star
                   key={i}
                   size={14}

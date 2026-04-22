@@ -216,7 +216,7 @@ export default async function ServiceDetail({
                   Add-on Tersedia
                 </h3>
                 <ul style={{ listStyle: "none" }}>
-                  {service.addons.map((addon) => (
+                  {service.addons.map((addon: any) => (
                     <li
                       key={addon.id}
                       style={{
@@ -265,7 +265,7 @@ export default async function ServiceDetail({
                       gap: "var(--space-md)",
                     }}
                   >
-                    {service.faqs.map((faq, idx) => (
+                    {service.faqs.map((faq: any, idx: number) => (
                       <div key={idx}>
                         <h4
                           style={{

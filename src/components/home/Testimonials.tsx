@@ -56,13 +56,13 @@ export default function Testimonials({
             </button>
 
             <div className={styles.slider}>
-              {testimonials.map((testi, index) => (
+              {testimonials.map((testi: any, index: number) => (
                 <div
                   key={testi.id}
                   className={`${styles.slide} ${index === currentIndex ? styles.active : ""}`}
                 >
                   <div className={styles.stars}>
-                    {[...Array(testi.rating)].map((_, i) => (
+                    {[...Array(testi.rating)].map((_: any, i: number) => (
                       <Star
                         key={i}
                         size={18}
@@ -101,7 +101,7 @@ export default function Testimonials({
             </div>
 
             <div className={styles.dots}>
-              {testimonials.map((_, index) => (
+              {testimonials.map((_: any, index: number) => (
                 <button
                   key={index}
                   className={`${styles.dot} ${index === currentIndex ? styles.dotActive : ""}`}

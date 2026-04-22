@@ -19,7 +19,7 @@ export default function Services({ services }: { services: any[] }) {
         </ScrollReveal>
 
         <div className={styles.grid}>
-          {services.map((service, index) => (
+          {services.map((service: any, index: number) => (
             <ScrollReveal
               key={service.id}
               animation="slideUp"
