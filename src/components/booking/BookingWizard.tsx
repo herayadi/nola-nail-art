@@ -300,6 +300,116 @@ export default function BookingWizard() {
     fetchBusySlots();
   }, [selectedDate, selectedTime]);
 
+  // ---------------------------------------------------------
+  // RENDER: Modern Calendar Component
+  // ---------------------------------------------------------
+  const [viewDate, setViewDate] = useState(new Date());
+
+  const ModernCalendar = () => {
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+    
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    const prevMonthDays = new Date(year, month, 0).getDate();
+    
+    const calendarDays = [];
+    
+    // Previous month filler
+    for (let i = firstDay - 1; i >= 0; i--) {
+      calendarDays.push({ day: prevMonthDays - i, type: "prev", date: new Date(year, month - 1, prevMonthDays - i) });
+    }
+    
+    // Current month
+    for (let i = 1; i <= daysInMonth; i++) {
+      calendarDays.push({ day: i, type: "current", date: new Date(year, month, i) });
+    }
+    
+    // Next month filler
+    const remainingSlots = 42 - calendarDays.length;
+    for (let i = 1; i <= remainingSlots; i++) {
+      calendarDays.push({ day: i, type: "next", date: new Date(year, month + 1, i) });
+    }
+
+    const isToday = (date: Date) => {
+      const today = new Date();
+      return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+    };
+
+    const isSelected = (date: Date) => {
+      if (!selectedDate) return false;
+      const [y, m, d] = selectedDate.split('-').map(Number);
+      return date.getDate() === d && date.getMonth() === m - 1 && date.getFullYear() === y;
+    };
+
+    const isPast = (date: Date) => {
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      return date < today;
+    };
+
+    const handleDateClick = (date: Date) => {
+      if (isPast(date)) return;
+      const formatted = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      setSelectedDate(formatted);
+    };
+
+    return (
+      <div className={styles.calendarContainer}>
+        <div className={styles.calendarHeader}>
+          <span className={styles.currentMonth}>{months[month]} {year}</span>
+          <div className={styles.calNav}>
+            <button 
+              type="button" 
+              className={styles.calNavBtn} 
+              onClick={() => setViewDate(new Date(year, month - 1, 1))}
+              disabled={month === new Date().getMonth() && year === new Date().getFullYear()}
+            >
+              <ArrowLeft size={14} />
+            </button>
+            <button 
+              type="button" 
+              className={styles.calNavBtn} 
+              onClick={() => setViewDate(new Date(year, month + 1, 1))}
+            >
+              <ArrowRight size={14} />
+            </button>
+          </div>
+        </div>
+        <div className={styles.daysGrid}>
+          {days.map(d => <div key={d} className={styles.weekdayLabel}>{d}</div>)}
+          {calendarDays.map((d, idx) => {
+            const past = isPast(d.date);
+            const selected = isSelected(d.date);
+            const today = isToday(d.date);
+            
+            return (
+              <button
+                key={idx}
+                type="button"
+                className={`
+                  ${styles.dayBtn} 
+                  ${d.type !== 'current' ? styles.otherMonth : ''} 
+                  ${selected ? styles.selectedDay : ''} 
+                  ${today ? styles.today : ''} 
+                  ${past ? styles.disabledDay : ''}
+                `}
+                onClick={() => handleDateClick(d.date)}
+                disabled={past}
+              >
+                {d.day}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   // RENDER: STEP 3 - Schedule
   const renderStep3 = () => (
     <div className={styles.stepContent}>
@@ -307,14 +417,8 @@ export default function BookingWizard() {
       <p className={styles.stepDesc}>Tentukan tanggal dan waktu kedatanganmu.</p>
       
       <div className={styles.formGroup}>
-        <label className={styles.label}><CalendarIcon size={16}/> Tanggal</label>
-        <input 
-          type="date" 
-          className={styles.input}
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-          min={new Date().toISOString().split('T')[0]} // block past dates
-        />
+        <label className={styles.label}><CalendarIcon size={16}/> Pilih Tanggal</label>
+        <ModernCalendar />
       </div>
 
       <div className={styles.formGroup}>

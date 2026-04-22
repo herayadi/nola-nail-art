@@ -321,14 +321,121 @@
   opacity: 0.8;
 }
 
-.timeSlot:hover:not(.timeSlotBusy) {
-  border-color: var(--color-gray-400);
+.selectedTime {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
+  box-shadow: 0 8px 16px rgba(201, 160, 74, 0.25);
 }
 
-.selectedTime {
-  background-color: var(--color-dark);
-  border-color: var(--color-dark);
-  color: var(--color-white);
+/* Modern Calendar Styles */
+.calendarContainer {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-100);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  margin-bottom: var(--space-xl);
+  user-select: none;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  padding: 0 var(--space-xs);
+}
+
+.currentMonth {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--color-dark);
+}
+
+.calNav {
+  display: flex;
+  gap: 8px;
+}
+
+.calNavBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-gray-200);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-500);
+  transition: all 0.2s;
+}
+
+.calNavBtn:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.calNavBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.weekdayLabel {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-gray-400);
+  padding: var(--space-xs) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dayBtn {
+  aspect-ratio: 1;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-dark);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.dayBtn:hover:not(.disabledDay) {
+  background-color: var(--color-gray-50);
+  color: var(--color-accent);
+}
+
+.selectedDay {
+  background-color: var(--color-accent) !important;
+  color: var(--color-white) !important;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(201, 160, 74, 0.3);
+}
+
+.today {
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+}
+
+.disabledDay {
+  color: var(--color-gray-200);
+  cursor: not-allowed;
+}
+
+.otherMonth {
+  opacity: 0.2;
 }
 
 /* Step 5: Summary */

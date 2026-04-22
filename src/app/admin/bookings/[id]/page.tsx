@@ -12,7 +12,11 @@ export default async function BookingDetailPage({
   const booking = await prisma.booking.findUnique({
     where: { id },
     include: {
-      service: true,
+      service: {
+        include: {
+          addons: true,
+        },
+      },
     },
   });
 

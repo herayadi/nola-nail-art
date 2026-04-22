@@ -14,7 +14,10 @@ import {
   Phone,
   FileText,
   Save,
-  Loader2
+  Loader2,
+  Sparkles,
+  Copy,
+  Plus
 } from "lucide-react";
 import Link from "next/link";
 import styles from "../bookings.module.css";
@@ -31,6 +34,7 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
   const [loading, setLoading] = useState<string | null>(null);
   const [internalNotes, setInternalNotes] = useState(booking.internalNotes || "");
   const [isSavingNotes, setIsSavingNotes] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const updateStatus = async (newStatus: string) => {
     setLoading(newStatus);
@@ -40,9 +44,14 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
-      if (res.ok) router.refresh();
+      if (res.ok) {
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(`Error: ${data.error || "Gagal memperbarui status."}`);
+      }
     } catch (err) {
-      alert("Gagal memperbarui status.");
+      alert("Terjadi kesalahan jaringan.");
     } finally {
       setLoading(null);
     }
@@ -56,9 +65,14 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paymentStatus: newPaymentStatus }),
       });
-      if (res.ok) router.refresh();
+      if (res.ok) {
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(`Error: ${data.error || "Gagal memperbarui status pembayaran."}`);
+      }
     } catch (err) {
-      alert("Gagal memperbarui status pembayaran.");
+      alert("Terjadi kesalahan jaringan.");
     } finally {
       setLoading(null);
     }
@@ -80,22 +94,34 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
     }
   };
 
+  const copyPhone = () => {
+    navigator.clipboard.writeText(booking.customerPhone);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const waMessage = `Halo ${booking.customerName}, konfirmasi booking Anda di Nola Nail Art untuk tanggal ${new Date(booking.selectedDate).toLocaleDateString()} jam ${booking.timeSlot} sudah kami terima. Silakan melakukan deposit...`;
 
+  // Parse addon IDs and find their records
+  const selectedAddonIds = JSON.parse(booking.addonIds || "[]");
+  const selectedAddons = booking.service.addons?.filter((a: any) => selectedAddonIds.includes(a.id)) || [];
+
   return (
-    <div className="animate-fade-in">
-      <Link href="/admin/bookings" className="flex items-center gap-2 text-gray-400 hover:text-white mb-6 transition-colors">
+    <div className={styles.container}>
+      <Link href="/admin/bookings" className="flex items-center gap-2 text-gray-400 hover:text-accent mb-8 transition-colors text-sm font-bold uppercase tracking-widest">
         <ArrowLeft size={16} /> Kembali ke Daftar
       </Link>
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left Col: Info */}
-        <div className="flex-1 space-y-6">
-          <div className="bg-surface border border-border p-6 rounded-xl">
-            <div className="flex justify-between items-start mb-6">
+      <div className={styles.detailGrid}>
+        {/* Main Info */}
+        <div className="space-y-8">
+          <div className={styles.card}>
+            <div className="flex justify-between items-start mb-10">
               <div>
-                <h1 className="text-2xl font-semibold mb-1">Booking #{booking.id.slice(-6).toUpperCase()}</h1>
-                <p className="text-gray-400 text-sm">Dibuat pada {new Date(booking.createdAt).toLocaleString()}</p>
+                <h1 className={styles.title} style={{ fontSize: '2.5rem', marginBottom: '8px' }}>
+                  Booking #{booking.id.slice(-6).toUpperCase()}
+                </h1>
+                <p className={styles.valueMuted}>Pemesanan diterima pada {new Date(booking.createdAt).toLocaleString()}</p>
               </div>
               <Badge 
                 variant={
@@ -103,82 +129,159 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
                   booking.status === "CONFIRMED" ? "info" : 
                   booking.status === "COMPLETED" ? "success" : "neutral"
                 }
-                className="text-sm px-4 py-1"
+                className="text-sm px-8 py-3 rounded-full font-black uppercase tracking-widest"
               >
                 {booking.status}
               </Badge>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <h3 className="text-accent text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                  <User size={14} /> Data Customer
-                </h3>
-                <div>
-                  <p className="font-semibold text-lg">{booking.customerName}</p>
-                  <p className="text-gray-400 flex items-center gap-2 mt-1">
-                    <Phone size={14} /> {booking.customerPhone}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className={styles.infoSection}>
+                <span className={styles.label}>Data Customer</span>
+                <p className={styles.value} style={{ fontSize: '1.75rem', marginBottom: '8px' }}>{booking.customerName}</p>
+                <div className="flex items-center gap-4">
+                  <p className="text-accent flex items-center gap-2 font-bold text-lg">
+                    <Phone size={18} /> {booking.customerPhone}
                   </p>
+                  <button onClick={copyPhone} className={styles.copyBtn}>
+                    {copied ? "Copied!" : <><Copy size={12} className="inline mr-1" /> Copy</>}
+                  </button>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-accent text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                  <Calendar size={14} /> Jadwal Kedatangan
-                </h3>
-                <div>
-                  <p className="font-semibold text-lg">{booking.timeSlot}</p>
-                  <p className="text-gray-400">
-                    {new Date(booking.selectedDate).toLocaleDateString("id-ID", {
-                      weekday: 'long',
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric'
-                    })}
-                  </p>
+              <div className={styles.infoSection}>
+                <span className={styles.label}>Jadwal Kedatangan</span>
+                <p className={styles.value} style={{ fontSize: '1.75rem', marginBottom: '8px' }}>{booking.timeSlot}</p>
+                <p className={styles.value} style={{ opacity: 0.8 }}>
+                  <Calendar size={18} className="inline mr-2 text-accent" />
+                  {new Date(booking.selectedDate).toLocaleDateString("id-ID", {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.divider} />
+
+            <div className={styles.infoSection}>
+              <span className={styles.label}>Detail Layanan & Add-ons</span>
+              <div className="mt-6 space-y-6">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className={styles.value} style={{ fontSize: '1.5rem' }}>{booking.service.name}</p>
+                    <p className={styles.valueMuted} style={{ fontSize: '1rem' }}>{booking.service.duration} Session</p>
+                  </div>
+                  <p className={styles.value}>Rp {booking.service.price.toLocaleString("id-ID")}</p>
+                </div>
+
+                {selectedAddons.length > 0 && (
+                  <div className="space-y-3 pt-2">
+                    {selectedAddons.map((addon: any) => (
+                      <div key={addon.id} className="flex justify-between items-center">
+                        <span className={styles.addonTag}>
+                          <Plus size={12} /> {addon.name}
+                        </span>
+                        <span className={styles.valueMuted}>+ Rp {addon.price.toLocaleString("id-ID")}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className={styles.divider} style={{ margin: '24px 0' }} />
+
+                <div className="flex justify-between items-end">
+                  <div>
+                    <span className={styles.label}>Total Estimasi</span>
+                    <p className={styles.priceHighlight}>Rp {booking.totalPrice.toLocaleString("id-ID")}</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant={booking.paymentStatus === "PAID" ? "success" : "error"} className="px-6 py-2 rounded-lg font-bold">
+                      {booking.paymentStatus === "PAID" ? "LUNAS" : "BELUM DIBAYAR"}
+                    </Badge>
+                  </div>
                 </div>
               </div>
+
+              {booking.customerNotes && (
+                <div className={styles.customerNote}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <FileText size={16} className="text-accent" />
+                    <span className={styles.label} style={{ color: 'var(--admin-accent)', marginBottom: 0 }}>Catatan Khusus Pelanggan</span>
+                  </div>
+                  <p className={styles.noteText}>"{booking.customerNotes}"</p>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="bg-surface border border-border p-6 rounded-xl">
-            <h3 className="text-accent text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
-              <Sparkles size={14} /> Detail Layanan
+          {/* Booking History / Timeline */}
+          <div className={styles.card}>
+            <h3 className={styles.cardTitle}>
+              <Clock size={18} /> Booking Timeline
             </h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="font-medium">{booking.service.name}</span>
-                <span>Rp {booking.service.price.toLocaleString("id-ID")}</span>
+            <div className={styles.timeline}>
+              <div className={`${styles.timelineItem} ${styles.timelineItemActive}`}>
+                <div className={styles.stepIcon}><Plus size={18} /></div>
+                <div className={styles.stepContent}>
+                  <p className={styles.stepTitle}>Pemesanan Diterima</p>
+                  <span className={styles.stepTime}>{new Date(booking.createdAt).toLocaleString()}</span>
+                </div>
               </div>
-              {/* Add-ons placeholder if needed */}
-              <div className="border-t border-border pt-3 mt-3 flex justify-between items-center font-bold text-lg">
-                <span>Total Estimasi</span>
-                <span className="text-accent">Rp {booking.totalPrice.toLocaleString("id-ID")}</span>
+              
+              <div className={`${styles.timelineItem} ${booking.status !== "PENDING" ? styles.timelineItemActive : ""}`}>
+                <div className={styles.stepIcon}><CheckCircle size={18} /></div>
+                <div className={styles.stepContent}>
+                  <p className={styles.stepTitle}>Konfirmasi Admin</p>
+                  <span className={styles.stepTime}>
+                    {booking.status === "PENDING" ? "Menunggu tindakan..." : `Dikonfirmasi pada ${new Date(booking.updatedAt).toLocaleString()}`}
+                  </span>
+                </div>
               </div>
+
+              {booking.status === "COMPLETED" && (
+                <div className={`${styles.timelineItem} ${styles.timelineItemActive}`}>
+                  <div className={styles.stepIcon}><Sparkles size={18} /></div>
+                  <div className={styles.stepContent}>
+                    <p className={styles.stepTitle}>Layanan Selesai</p>
+                    <span className={styles.stepTime}>Perawatan telah selesai dilakukan</span>
+                  </div>
+                </div>
+              )}
+
+              {booking.status === "CANCELLED" && (
+                <div className={`${styles.timelineItem} ${styles.timelineItemActive}`} style={{ color: 'var(--color-error)' }}>
+                  <div className={styles.stepIcon} style={{ borderColor: 'var(--color-error)', color: 'var(--color-error)' }}><XCircle size={18} /></div>
+                  <div className={styles.stepContent}>
+                    <p className={styles.stepTitle}>Pemesanan Dibatalkan</p>
+                    <span className={styles.stepTime}>Dibatalkan oleh sistem/admin</span>
+                  </div>
+                </div>
+              )}
             </div>
-            {booking.customerNotes && (
-              <div className="mt-6 p-4 bg-dark/50 border-l-4 border-accent rounded-r-lg">
-                <p className="text-xs font-bold text-gray-400 uppercase mb-1">Catatan Customer:</p>
-                <p className="italic text-sm">"{booking.customerNotes}"</p>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Right Col: Actions */}
-        <div className="w-full lg:w-80 space-y-6">
-          <div className="bg-surface border border-border p-6 rounded-xl">
-            <h3 className="text-sm font-bold mb-4">Aksi Pengelola</h3>
+        {/* Sidebar Actions */}
+        <div className="space-y-8">
+          <div className={styles.card}>
+            <h3 className={styles.cardTitle}>
+              <Save size={18} /> Aksi Cepat
+            </h3>
             
-            <div className="space-y-3">
+            <div className={styles.actionStack}>
               {booking.status === "PENDING" && (
                 <Button 
                   fullWidth 
                   onClick={() => updateStatus("CONFIRMED")}
                   disabled={loading !== null}
+                  className={styles.btnConfirm}
+                  style={{ height: '60px', borderRadius: '18px', fontSize: '1rem' }}
                 >
-                  {loading === "CONFIRMED" ? <Loader2 className="animate-spin" /> : <CheckCircle size={18} />}
-                  Konfirmasi Booking
+                  {loading === "CONFIRMED" ? <Loader2 className="animate-spin" /> : <CheckCircle size={20} />}
+                  Konfirmasi Sekarang
                 </Button>
               )}
               
@@ -187,8 +290,10 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
                   fullWidth 
                   onClick={() => updateStatus("COMPLETED")}
                   disabled={loading !== null}
+                  className={styles.btnConfirm}
+                  style={{ height: '60px', borderRadius: '18px', fontSize: '1rem' }}
                 >
-                  {loading === "COMPLETED" ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />}
+                  {loading === "COMPLETED" ? <Loader2 className="animate-spin" /> : <Sparkles size={20} />}
                   Tandai Selesai
                 </Button>
               )}
@@ -199,61 +304,58 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
                 rel="noopener noreferrer"
                 className="block"
               >
-                <Button variant="whatsapp" fullWidth>
-                  <MessageCircle size={18} /> Chat WhatsApp
+                <Button 
+                  fullWidth 
+                  className={styles.btnWhatsApp}
+                  style={{ height: '60px', borderRadius: '18px' }}
+                >
+                  <MessageCircle size={20} /> Hubungi via WA
                 </Button>
               </a>
 
-              {booking.status !== "CANCELLED" && (
+              {booking.status !== "CANCELLED" && booking.status !== "COMPLETED" && (
                 <Button 
                   variant="ghost" 
                   fullWidth 
-                  className="text-error hover:bg-error/10"
+                  className={styles.btnCancel}
                   onClick={() => updateStatus("CANCELLED")}
                   disabled={loading !== null}
+                  style={{ height: '56px', borderRadius: '16px', marginTop: '12px' }}
                 >
-                  <XCircle size={18} /> Batalkan Pesanan
+                  <XCircle size={18} /> Batalkan Booking
                 </Button>
               )}
             </div>
           </div>
 
-          <div className="bg-surface border border-border p-6 rounded-xl">
-            <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-              <CreditCard size={16} /> Status Pembayaran
+          <div className={styles.card}>
+            <h3 className={styles.cardTitle}>
+              <CreditCard size={18} /> Verifikasi Bayar
             </h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center text-sm">
-                <span>Tagihan:</span>
-                <span className="font-bold">Rp {booking.totalPrice.toLocaleString("id-ID")}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span>Status:</span>
-                <Badge variant={booking.paymentStatus === "PAID" ? "success" : "error"}>
-                  {booking.paymentStatus === "PAID" ? "LUNAS" : "BELUM BAYAR"}
-                </Badge>
-              </div>
-              
+            <div className="space-y-6">
               <Button 
-                variant="secondary" 
                 fullWidth 
-                size="sm"
                 onClick={() => updatePayment(booking.paymentStatus === "PAID" ? "UNPAID" : "PAID")}
                 disabled={loading === "payment"}
+                className={styles.btnPayment}
+                style={{ height: '56px', borderRadius: '16px' }}
               >
-                {loading === "payment" ? <Loader2 className="animate-spin" /> : <CreditCard size={16} />}
-                Tandai {booking.paymentStatus === "PAID" ? "Belum Bayar" : "Sudah Bayar"}
+                {loading === "payment" ? <Loader2 className="animate-spin" /> : <CreditCard size={18} />}
+                {booking.paymentStatus === "PAID" ? "Set Belum Bayar" : "Konfirmasi Lunas"}
               </Button>
+              <p className={styles.valueMuted} style={{ fontSize: '0.75rem', textAlign: 'center' }}>
+                Pastikan Anda telah mengecek mutasi rekening sebelum melakukan konfirmasi lunas.
+              </p>
             </div>
           </div>
 
-          <div className="bg-surface border border-border p-6 rounded-xl">
-            <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
-              <FileText size={16} /> Catatan Internal
+          <div className={styles.card}>
+            <h3 className={styles.cardTitle}>
+              <FileText size={18} /> Internal Notes
             </h3>
             <textarea 
-              className="w-full bg-dark border border-border rounded-lg p-3 text-sm focus:border-accent outline-none min-h-[100px]"
-              placeholder="Catatan rahasia admin..."
+              className={styles.notesArea}
+              placeholder="Tambahkan catatan rahasia pengelola..."
               value={internalNotes}
               onChange={(e) => setInternalNotes(e.target.value)}
             />
@@ -261,12 +363,13 @@ export default function BookingDetailClient({ booking }: BookingDetailClientProp
               variant="ghost" 
               fullWidth 
               size="sm" 
-              className="mt-2 text-xs"
+              className="mt-4"
               onClick={saveNotes}
               disabled={isSavingNotes}
+              style={{ borderRadius: '12px', border: '1px solid var(--admin-border)' }}
             >
-              {isSavingNotes ? <Loader2 className="animate-spin" /> : <Save size={14} />}
-              Simpan Catatan
+              {isSavingNotes ? <Loader2 className="animate-spin" /> : <Save size={16} />}
+              Simpan Perubahan
             </Button>
           </div>
         </div>
