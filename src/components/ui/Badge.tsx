@@ -3,13 +3,11 @@ import styles from "./Badge.module.css";
 
 interface BadgeProps {
   children: ReactNode;
-  variant?: "neutral" | "accent" | "outline";
+  variant?: "neutral" | "accent" | "outline" | "warning" | "info" | "success";
 }
 
 export default function Badge({ children, variant = "neutral" }: BadgeProps) {
   return (
-    <span className={`${styles.badge} ${styles[variant]}`}>
-      {children}
-    </span>
+    <span className={`${styles.badge} ${styles[variant]}`}>{children}</span>
   );
 }
