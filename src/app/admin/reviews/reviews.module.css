@@ -1,164 +1,257 @@
 .container {
   padding: var(--space-xl);
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
 .header {
-  margin-bottom: var(--space-3xl);
-  border-bottom: 1px solid var(--admin-border);
-  padding-bottom: var(--space-xl);
+  margin-bottom: var(--space-5xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .title {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  background: linear-gradient(to right, var(--admin-text), var(--admin-accent));
+  font-size: 4rem;
+  background: var(--admin-accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.subtitle {
+  color: var(--admin-text-muted);
+  font-size: 1.25rem;
+  margin-top: var(--space-xs);
+  letter-spacing: 0.05em;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: var(--space-xl);
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: var(--space-4xl);
 }
 
 .reviewCard {
-  background: var(--admin-surface);
+  background: linear-gradient(145deg, var(--admin-surface) 0%, rgba(20, 18, 16, 0.7) 100%);
   border: 1px solid var(--admin-border);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-xl);
+  border-radius: 40px;
+  padding: var(--space-4xl);
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(30px);
+}
+
+.reviewCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top right, var(--admin-accent-soft), transparent 60%);
+  opacity: 0.1;
+  transition: opacity 0.4s;
 }
 
 .reviewCard:hover {
+  transform: translateY(-20px) scale(1.02);
   border-color: var(--admin-accent);
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 60px 120px rgba(0, 0, 0, 0.6);
+}
+
+.reviewCard:hover::before {
+  opacity: 0.2;
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-3xl);
+  z-index: 1;
 }
 
 .userInfo {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-xl);
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
-  background: var(--admin-bg);
-  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  background: var(--admin-accent-gradient);
+  border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--admin-accent);
-  font-weight: bold;
-  border: 1px solid var(--admin-border);
+  color: var(--admin-bg);
+  font-weight: 900;
+  font-size: 2rem;
+  box-shadow: 0 20px 40px rgba(201, 160, 74, 0.3);
+  transform: rotate(-8deg);
+  transition: transform 0.4s;
+}
+
+.reviewCard:hover .avatar {
+  transform: rotate(0deg) scale(1.1);
 }
 
 .userName {
-  font-weight: 700;
+  font-weight: 900;
   color: var(--admin-text);
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
 }
 
 .serviceName {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--admin-accent);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
+  letter-spacing: 0.3em;
+  font-weight: 900;
+  margin-top: 4px;
 }
 
 .rating {
   display: flex;
-  gap: 2px;
-  color: #FFD700;
+  gap: 6px;
+  color: var(--admin-accent);
 }
 
 .content {
-  font-size: 0.9375rem;
+  font-size: 1.125rem;
   color: var(--admin-text-muted);
-  line-height: 1.6;
-  margin-bottom: var(--space-xl);
+  line-height: 2;
+  margin-bottom: var(--space-4xl);
   flex-grow: 1;
   font-style: italic;
+  position: relative;
+  padding: 0 var(--space-xl);
+  z-index: 1;
+}
+
+.content::before {
+  content: "“";
+  position: absolute;
+  left: -20px;
+  top: -40px;
+  font-size: 8rem;
+  font-family: var(--font-heading);
+  color: var(--admin-accent);
+  opacity: 0.15;
 }
 
 .cardFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: var(--space-lg);
+  padding-top: var(--space-2xl);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 1;
 }
 
 .date {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--admin-text-muted);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 16px;
+}
+
+.btnApprove, .btnReject {
+  padding: 12px 28px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.4s;
 }
 
 .btnApprove {
   background: rgba(34, 197, 94, 0.1);
-  color: #22C55E;
+  color: #4ADE80;
   border: 1px solid rgba(34, 197, 94, 0.2);
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  transition: all 0.2s;
 }
 
 .btnApprove:hover {
   background: #22C55E;
   color: white;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(34, 197, 94, 0.3);
 }
 
 .btnReject {
   background: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
+  color: #F87171;
   border: 1px solid rgba(239, 68, 68, 0.2);
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  transition: all 0.2s;
 }
 
 .btnReject:hover {
   background: #EF4444;
   color: white;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(239, 68, 68, 0.3);
+}
+
+.actionBtn {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--admin-text-muted);
+  transition: all 0.4s;
+}
+
+.actionBtn:hover {
+  background: var(--admin-surface-hover);
+  color: var(--admin-text);
+  border-color: var(--admin-accent);
+  transform: translateY(-4px);
+}
+
+.deleteBtn:hover {
+  background: #EF4444;
+  color: white;
+  border-color: #EF4444;
 }
 
 .statusBadge {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 4px 12px;
-  font-size: 10px;
-  font-weight: 800;
-  border-bottom-left-radius: 12px;
+  padding: 10px 24px;
+  font-size: 11px;
+  font-weight: 900;
+  border-bottom-left-radius: 30px;
   text-transform: uppercase;
+  letter-spacing: 0.3em;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+  
+  .title {
+    font-size: 2.5rem;
   }
 }

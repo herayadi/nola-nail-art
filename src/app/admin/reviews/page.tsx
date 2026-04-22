@@ -13,7 +13,7 @@ export default async function AdminReviewsPage() {
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>Customer Voice</h1>
-          <p className="text-gray-400 text-sm">Moderate and highlight the best testimonials from your clients.</p>
+          <p className={styles.subtitle}>Moderate and highlight the best testimonials from your clients.</p>
         </div>
       </header>
 

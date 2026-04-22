@@ -55,11 +55,11 @@ export default function ReviewList({ initialReviews }: ReviewListProps) {
           <div 
             className={styles.statusBadge} 
             style={{ 
-              backgroundColor: review.isApproved ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-              color: review.isApproved ? '#22C55E' : '#EF4444'
+              backgroundColor: review.isApproved ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+              color: review.isApproved ? '#4ADE80' : '#F87171'
             }}
           >
-            {review.isApproved ? 'Approved' : 'Pending'}
+            {review.isApproved ? 'Active' : 'Moderate'}
           </div>
 
           <div className={styles.cardHeader}>
@@ -78,20 +78,19 @@ export default function ReviewList({ initialReviews }: ReviewListProps) {
                   key={i} 
                   size={14} 
                   fill={i < review.rating ? "currentColor" : "none"} 
-                  className={i < review.rating ? "" : "text-gray-700"}
+                  className={i < review.rating ? "" : "opacity-20"}
                 />
               ))}
             </div>
           </div>
 
           <div className={styles.content}>
-            <Quote size={16} className="text-accent/20 mb-2" />
             {review.text}
           </div>
 
           <div className={styles.cardFooter}>
             <span className={styles.date}>
-              {new Date(review.createdAt).toLocaleDateString()}
+              {new Date(review.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric', year: 'numeric' })}
             </span>
             
             <div className={styles.actions}>
@@ -109,17 +108,20 @@ export default function ReviewList({ initialReviews }: ReviewListProps) {
                   className={styles.btnReject}
                   disabled={loadingId === review.id}
                 >
-                  Reject
+                  Hide
                 </button>
               )}
               
               <button 
                 onClick={() => handleAction(review.id, 'highlight')}
-                className={`${styles.actionBtn} ${review.isHighlight ? styles.editBtn : ''}`}
-                style={{ backgroundColor: review.isHighlight ? 'var(--admin-accent)' : '', color: review.isHighlight ? 'var(--admin-bg)' : '' }}
-                title="Highlight to Home"
+                className={styles.actionBtn}
+                style={{ 
+                  backgroundColor: review.isHighlight ? 'var(--admin-accent)' : '', 
+                  color: review.isHighlight ? 'var(--admin-bg)' : '' 
+                }}
+                title={review.isHighlight ? "Remove from Highlights" : "Highlight to Home"}
               >
-                <Award size={16} />
+                <Award size={18} />
               </button>
 
               <button 
@@ -127,7 +129,7 @@ export default function ReviewList({ initialReviews }: ReviewListProps) {
                 className={`${styles.actionBtn} ${styles.deleteBtn}`}
                 title="Delete Permanent"
               >
-                <Trash2 size={16} />
+                <Trash2 size={18} />
               </button>
             </div>
           </div>

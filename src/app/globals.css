@@ -46,6 +46,8 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-3xl: 48px;
   --radius-full: 9999px;
 
   /* Shadows */
@@ -70,6 +72,7 @@
   --admin-text-muted: #8A827B;
   --admin-accent: #C9A04A;
   --admin-accent-soft: rgba(201, 160, 74, 0.1);
+  --admin-accent-gradient: linear-gradient(135deg, #C9A04A 0%, #E5D5C8 100%);
 }
 
 /* Base Reset & Styles */
