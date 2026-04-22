@@ -3,7 +3,14 @@ import styles from "./Badge.module.css";
 
 interface BadgeProps {
   children: ReactNode;
-  variant?: "neutral" | "accent" | "outline" | "warning" | "info" | "success";
+  variant?:
+    | "neutral"
+    | "accent"
+    | "outline"
+    | "warning"
+    | "info"
+    | "success"
+    | "error";
   className?: string;
 }
 

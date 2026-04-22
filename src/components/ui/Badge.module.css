@@ -38,6 +38,12 @@
   border: 1px solid #b7eb8f;
 }
 
+.error {
+  background-color: #fff1f0;
+  color: #d4380d;
+  border: 1px solid #ffccc7;
+}
+
 .outline {
   background-color: transparent;
   color: var(--color-dark);
