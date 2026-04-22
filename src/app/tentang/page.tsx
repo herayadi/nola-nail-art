@@ -108,7 +108,7 @@ export default function TentangPage() {
               gap: "var(--space-md)",
             }}
           >
-            {values.map((v: string, idx: number) => (
+            {values.map((v: any, idx: number) => (
               <ScrollReveal key={idx} animation="slideUp" delay={idx * 150}>
                 <Card elevated style={{ textAlign: "center" }}>
                   <div
