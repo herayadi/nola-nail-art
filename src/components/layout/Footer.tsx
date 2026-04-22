@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MapPin, Phone, Clock } from "lucide-react";
 import styles from "./Footer.module.css";
 
@@ -22,7 +25,13 @@ const InstagramIcon = ({ size = 24, className = "" }: { size?: number; className
 );
 
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // Hide footer on login and admin pages
+  if (pathname === "/login" || pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <footer className={styles.footer}>

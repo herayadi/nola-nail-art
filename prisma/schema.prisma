@@ -9,6 +9,10 @@ datasource db {
   provider = "sqlite"
 }
 
+// ─────────────────────────────────────────────
+// LAYANAN & ADD-ON
+// ─────────────────────────────────────────────
+
 model Service {
   id               String   @id @default(cuid())
   name             String
@@ -18,8 +22,9 @@ model Service {
   duration         String
   image            String
   isPopular        Boolean  @default(false)
+  isActive         Boolean  @default(true)
   category         String
-  
+
   addons           Addon[]
   faqs             Faq[]
   bookings         Booking[]
@@ -29,74 +34,168 @@ model Service {
 }
 
 model Addon {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   name      String
   price     Float
   serviceId String
-  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 }
+
+// ─────────────────────────────────────────────
+// FAQ
+// ─────────────────────────────────────────────
 
 model Faq {
   id        String   @id @default(cuid())
   question  String
   answer    String
+  sortOrder Int      @default(0)
   serviceId String?
   service   Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 }
 
+// ─────────────────────────────────────────────
+// PORTFOLIO / GALLERY
+// ─────────────────────────────────────────────
+
 model Portfolio {
-  id        String   @id @default(cuid())
-  title     String
-  category  String
-  imageUrl  String
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  imageUrl    String
+  beforeImage String?
+  isFeatured  Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
 }
+
+// ─────────────────────────────────────────────
+// TESTIMONIAL / REVIEW
+// ─────────────────────────────────────────────
 
 model Testimonial {
-  id        String   @id @default(cuid())
-  name      String
-  service   String
-  rating    Int      @default(5)
-  text      String
-  imageUrl  String?
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  name        String
+  service     String
+  rating      Int      @default(5)
+  text        String
+  imageUrl    String?
+  isApproved  Boolean  @default(false)
+  isHighlight Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }
 
+// ─────────────────────────────────────────────
+// CUSTOMER
+// ─────────────────────────────────────────────
+
+model Customer {
+  id            String    @id @default(cuid())
+  name          String
+  phone         String    @unique
+  email         String?
+  totalSpent    Float     @default(0)
+  totalBookings Int       @default(0)
+  preferences   String?
+  internalNotes String?
+  bookings      Booking[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// ─────────────────────────────────────────────
+// BOOKING
+// ─────────────────────────────────────────────
+
 model Booking {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   customerName     String
   customerPhone    String
   customerNotes    String?
-  
-  selectedDate     DateTime 
-  timeSlot         String   
-  
-  totalPrice       Float
 
-  status           String   @default("PENDING") 
+  selectedDate     DateTime
+  timeSlot         String
+
+  totalPrice       Float
+  paymentStatus    String    @default("UNPAID")
+  status           String    @default("PENDING")
+  internalNotes    String?
 
   serviceId        String
-  service          Service  @relation(fields: [serviceId], references: [id])
-  
-  // NOTE: Because SQLite locally doesn't support arrays (String[]), 
-  // we will save chosen Add-ons cleanly as a JSON string
-  addonIds         String   
+  service          Service   @relation(fields: [serviceId], references: [id])
 
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  customerId       String?
+  customer         Customer? @relation(fields: [customerId], references: [id])
+
+  // SQLite doesn't support arrays, stored as JSON string
+  addonIds         String
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
+
+// ─────────────────────────────────────────────
+// PROMO & VOUCHER
+// ─────────────────────────────────────────────
+
+model Promotion {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  type        String   // "PERCENTAGE" | "NOMINAL"
+  value       Float
+  minPurchase Float?
+  maxUsage    Int?
+  usageCount  Int      @default(0)
+  isActive    Boolean  @default(true)
+  validFrom   DateTime
+  validUntil  DateTime
+  targetType  String?  // "NEW" | "REPEAT" | "ALL"
+  createdAt   DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────
+// AUTH & USER
+// ─────────────────────────────────────────────
 
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
-  password  String   
+  password  String
   name      String?
   role      String   @default("ADMIN")
 }
 
+// ─────────────────────────────────────────────
+// ACTIVITY LOG
+// ─────────────────────────────────────────────
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String
+  details   String?
+  createdAt DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────
+// SETTINGS (Key-Value Store)
+// ─────────────────────────────────────────────
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+// ─────────────────────────────────────────────
+// TIME SLOT
+// ─────────────────────────────────────────────
+
 model TimeSlot {
   id        String   @id @default(cuid())
-  time      String   // e.g. "09:00"
+  time      String
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
 }

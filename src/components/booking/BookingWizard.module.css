@@ -277,6 +277,24 @@
 .input:focus, .textarea:focus {
   outline: none;
   border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(255, 138, 174, 0.1);
+}
+
+.inputError {
+  border-color: #dc2626 !important;
+  background-color: rgba(220, 38, 38, 0.02);
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+}
+
+.fieldError {
+  display: block;
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  animation: fadeIn 0.2s ease;
 }
 
 .timeGrid {
@@ -295,7 +313,15 @@
   font-weight: 500;
 }
 
-.timeSlot:hover {
+.timeSlotBusy {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+  border-color: var(--color-gray-200);
+  opacity: 0.8;
+}
+
+.timeSlot:hover:not(.timeSlotBusy) {
   border-color: var(--color-gray-400);
 }
 

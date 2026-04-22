@@ -8,34 +8,45 @@ import { buildWhatsAppUrl, COMMON_MESSAGES } from "@/lib/whatsapp";
 export default function Navbar() {
   const pathname = usePathname();
 
+  // Hide navbar on login and admin pages
+  if (pathname === "/login" || pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
           NOLA
         </Link>
-        
+
         <div className={styles.navLinks}>
-          <Link 
-            href="/#gallery" 
-            className={pathname === "/gallery" ? styles.linkActive : styles.link}
+          <Link
+            href="/#gallery"
+            className={
+              pathname === "/gallery" ? styles.linkActive : styles.link
+            }
           >
             Gallery
           </Link>
-          <Link 
-            href="/layanan" 
-            className={pathname === "/layanan" ? styles.linkActive : styles.link}
+          <Link
+            href="/layanan"
+            className={
+              pathname === "/layanan" ? styles.linkActive : styles.link
+            }
           >
             Services
           </Link>
-          <Link 
-            href="/tentang" 
-            className={pathname === "/tentang" ? styles.linkActive : styles.link}
+          <Link
+            href="/tentang"
+            className={
+              pathname === "/tentang" ? styles.linkActive : styles.link
+            }
           >
             Atelier
           </Link>
-          <Link 
-            href="/kontak" 
+          <Link
+            href="/kontak"
             className={pathname === "/kontak" ? styles.linkActive : styles.link}
           >
             Contact
@@ -43,9 +54,9 @@ export default function Navbar() {
         </div>
 
         <div className={styles.actions}>
-          <a   
-            href={buildWhatsAppUrl(COMMON_MESSAGES.general)} 
-            target="_blank" 
+          <a
+            href={buildWhatsAppUrl(COMMON_MESSAGES.general)}
+            target="_blank"
             rel="noopener noreferrer"
             className={styles.waBtn}
           >

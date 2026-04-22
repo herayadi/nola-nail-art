@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FloatingCTA from "@/components/layout/FloatingCTA";
+import Providers from "@/components/Providers";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -29,10 +30,12 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className={`${inter.variable} ${playfair.variable}`}>
-        <Navbar />
-        <main style={{ minHeight: "100vh" }}>{children}</main>
-        <FloatingCTA />
-        <Footer />
+        <Providers>
+          <Navbar />
+          <main style={{ minHeight: "100vh" }}>{children}</main>
+          <FloatingCTA />
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

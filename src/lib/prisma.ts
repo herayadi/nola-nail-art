@@ -12,7 +12,7 @@ if (!connectionString) {
 const dbPath = connectionString.replace("file:", "");
 const absoluteDbPath = path.isAbsolute(dbPath) 
     ? dbPath 
-    : path.join(process.cwd(), dbPath);
+    : path.join(/* turbopackIgnore: true */ process.cwd(), dbPath);
 
 // The adapter expects an object with a 'url' property, not a database instance
 const adapter = new PrismaBetterSqlite3({

@@ -60,6 +60,15 @@
   --z-sticky: 100;
   --z-overlay: 1000;
   --z-modal: 2000;
+
+  /* Admin Dashboard Tokens (Dark Mode Premium) */
+  --admin-bg: #1A1614;
+  --admin-surface: #242019;
+  --admin-surface-hover: #2E2A22;
+  --admin-border: rgba(229, 213, 200, 0.08);
+  --admin-text: #F5F0EB;
+  --admin-text-muted: #9C9590;
+  --admin-accent: #C9A04A;
 }
 
 /* Base Reset & Styles */

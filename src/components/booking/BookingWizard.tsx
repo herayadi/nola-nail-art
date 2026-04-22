@@ -20,6 +20,7 @@ export default function BookingWizard() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   // State for Booking Data
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
@@ -67,13 +68,38 @@ export default function BookingWizard() {
   // Calculate total price
   const basePrice = selectedService?.price || 0;
   const addonsPrice = availableAddons
-    .filter(a => selectedAddons.includes(a.id))
-    .reduce((sum, addon) => sum + addon.price, 0);
+    .filter((a: any) => selectedAddons.includes(a.id))
+    .reduce((sum: number, addon: any) => sum + addon.price, 0);
   const totalPrice = basePrice + addonsPrice;
 
   // Handlers
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, STEPS.length - 1));
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 0));
+  const nextStep = () => {
+    setError(null);
+    setCurrentStep(prev => Math.min(prev + 1, STEPS.length - 1));
+  };
+  
+  const validateStep4 = () => {
+    const phone = customerData.phone;
+    let err = null;
+
+    if (!phone.startsWith("08")) {
+      err = "Nomor WhatsApp harus diawali dengan 08";
+    } else if (phone.length > 13) {
+      err = "Nomor WhatsApp maksimal 13 karakter";
+    }
+
+    if (err) {
+      setPhoneError(err);
+    } else {
+      setPhoneError(null);
+      nextStep();
+    }
+  };
+
+  const prevStep = () => {
+    setPhoneError(null);
+    setCurrentStep(prev => Math.max(prev - 1, 0));
+  };
 
   const handleServiceSelect = (id: string) => {
     setSelectedServiceId(id);
@@ -87,11 +113,17 @@ export default function BookingWizard() {
   };
 
   const handleConfirm = async () => {
+    // 1. Client-side validation for phone
+    if (!customerData.phone.startsWith("08")) {
+      setError("Nomor WhatsApp harus diawali dengan 08");
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
     try {
-      // 1. Save to database
+      // 2. Save to database
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -107,17 +139,19 @@ export default function BookingWizard() {
         }),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Gagal menyimpan pesanan ke database.");
+        throw new Error(result.error || "Gagal menyimpan pesanan ke database.");
       }
 
-      // 2. Build summary message for WhatsApp
+      // 3. Build summary message for WhatsApp
       const lines = [
         `Halo Nola Nail Art! Saya ingin konfirmasi booking:`,
         ``,
         `*Nama:* ${customerData.name}`,
         `*Layanan:* ${selectedService?.name}`,
-        `*Add-on:* ${selectedAddons.length > 0 ? availableAddons.filter(a => selectedAddons.includes(a.id)).map(a => a.name).join(", ") : "-"}`,
+        `*Add-on:* ${selectedAddons.length > 0 ? availableAddons.filter((a: any) => selectedAddons.includes(a.id)).map((a: any) => a.name).join(", ") : "-"}`,
         `*Tanggal:* ${selectedDate}`,
         `*Jam:* ${selectedTime}`,
         `*Catatan:* ${customerData.notes || "-"}`,
@@ -128,10 +162,9 @@ export default function BookingWizard() {
       const message = lines.join('\n');
       const waUrl = buildWhatsAppUrl(message);
       
-      // 3. Redirect to WhatsApp
+      // 4. Redirect to WhatsApp
       window.open(waUrl, '_blank');
       
-      // Optional: Redirect to success page or reset state
     } catch (err: any) {
       setError(err.message || "Terjadi kesalahan saat memproses pesanan.");
     } finally {
@@ -208,7 +241,7 @@ export default function BookingWizard() {
         <p className={styles.emptyText}>Tidak ada extra add-on untuk layanan ini.</p>
       ) : (
         <div className={styles.addonsList}>
-          {availableAddons.map(addon => {
+          {availableAddons.map((addon: any) => {
             const isSelected = selectedAddons.includes(addon.id);
             return (
               <div 
@@ -236,9 +269,38 @@ export default function BookingWizard() {
     </div>
   );
 
-  // ---------------------------------------------------------
+  // State for busy slots on selected date
+  const [busySlots, setBusySlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
+  // Fetch Busy Slots when date changes
+  useEffect(() => {
+    if (!selectedDate) return;
+
+    const fetchBusySlots = async () => {
+      try {
+        setLoadingSlots(true);
+        const res = await fetch(`/api/bookings?date=${selectedDate}`);
+        const data = await res.json();
+        if (res.ok) {
+          const times = data.map((b: any) => b.timeSlot);
+          setBusySlots(times);
+          // Auto-reset time if it becomes busy
+          if (times.includes(selectedTime)) {
+            setSelectedTime("");
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch busy slots:", err);
+      } finally {
+        setLoadingSlots(false);
+      }
+    };
+
+    fetchBusySlots();
+  }, [selectedDate, selectedTime]);
+
   // RENDER: STEP 3 - Schedule
-  // ---------------------------------------------------------
   const renderStep3 = () => (
     <div className={styles.stepContent}>
       <h2 className={styles.stepTitle}>Pilih Jadwal</h2>
@@ -256,17 +318,26 @@ export default function BookingWizard() {
       </div>
 
       <div className={styles.formGroup}>
-        <label className={styles.label}><Clock size={16}/> Waktu Tersedia</label>
+        <label className={styles.label}>
+          <Clock size={16}/> Waktu Tersedia 
+          {loadingSlots && <Loader2 size={12} className={styles.spinner} style={{ marginLeft: '8px', display: 'inline' }} />}
+        </label>
         <div className={styles.timeGrid}>
-          {availableTimeSlots.map(slot => (
-            <div 
-              key={slot.id}
-              className={`${styles.timeSlot} ${selectedTime === slot.time ? styles.selectedTime : ""}`}
-              onClick={() => setSelectedTime(slot.time)}
-            >
-              {slot.time}
-            </div>
-          ))}
+          {availableTimeSlots.map(slot => {
+            const isBusy = busySlots.includes(slot.time);
+            return (
+              <button 
+                key={slot.id}
+                type="button"
+                className={`${styles.timeSlot} ${selectedTime === slot.time ? styles.selectedTime : ""} ${isBusy ? styles.timeSlotBusy : ""}`}
+                onClick={() => !isBusy && setSelectedTime(slot.time)}
+                disabled={isBusy}
+              >
+                {slot.time}
+                {isBusy && <span style={{ display: 'block', fontSize: '10px', opacity: 0.7 }}>Penuh</span>}
+              </button>
+            );
+          })}
           {availableTimeSlots.length === 0 && !loading && (
             <p className={styles.emptyText}>Tidak ada jadwal tersedia.</p>
           )}
@@ -275,7 +346,7 @@ export default function BookingWizard() {
       
       <div className={styles.navButtons}>
         <Button variant="ghost" onClick={prevStep}><ArrowLeft size={16} /> Kembali</Button>
-        <Button onClick={nextStep} disabled={!selectedDate || !selectedTime} className={styles.nextBtn}>
+        <Button onClick={nextStep} disabled={!selectedDate || !selectedTime || loadingSlots} className={styles.nextBtn}>
           Lanjut <ArrowRight size={16} />
         </Button>
       </div>
@@ -306,10 +377,14 @@ export default function BookingWizard() {
         <input 
           type="tel" 
           placeholder="Cth: 08123456789"
-          className={styles.input}
+          className={`${styles.input} ${phoneError ? styles.inputError : ""}`}
           value={customerData.phone}
-          onChange={(e) => setCustomerData(prev => ({...prev, phone: e.target.value}))}
+          onChange={(e) => {
+            setCustomerData(prev => ({...prev, phone: e.target.value}));
+            if (phoneError) setPhoneError(null);
+          }}
         />
+        {phoneError && <span className={styles.fieldError}>{phoneError}</span>}
       </div>
 
       <div className={styles.formGroup}>
@@ -325,7 +400,7 @@ export default function BookingWizard() {
       
       <div className={styles.navButtons}>
         <Button variant="ghost" onClick={prevStep}><ArrowLeft size={16} /> Kembali</Button>
-        <Button onClick={nextStep} disabled={!customerData.name || !customerData.phone} className={styles.nextBtn}>
+        <Button onClick={validateStep4} disabled={!customerData.name || !customerData.phone} className={styles.nextBtn}>
           Lanjut <ArrowRight size={16} />
         </Button>
       </div>
@@ -349,7 +424,7 @@ export default function BookingWizard() {
           <span>Add-on:</span>
           <span className={styles.textRight}>
             {selectedAddons.length > 0 
-              ? availableAddons.filter(a => selectedAddons.includes(a.id)).map(a => a.name).join(", ") 
+              ? availableAddons.filter((a: any) => selectedAddons.includes(a.id)).map((a: any) => a.name).join(", ") 
               : "-"}
           </span>
         </div>

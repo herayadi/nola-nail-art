@@ -1,0 +1,27 @@
+.adminWrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: var(--font-body);
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Prevents flex items from overflowing */
+  background-color: var(--admin-bg);
+}
+
+.contentArea {
+  flex: 1;
+  padding: var(--space-xl);
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .contentArea {
+    padding: var(--space-md);
+  }
+}

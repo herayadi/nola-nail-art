@@ -1,0 +1,209 @@
+.header {
+  margin-bottom: var(--space-2xl);
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: var(--space-xs);
+  color: var(--admin-text);
+}
+
+.subtitle {
+  color: var(--admin-text-muted);
+  font-size: 1rem;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-3xl);
+}
+
+.statCard {
+  background-color: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--admin-accent);
+}
+
+.statHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statLabel {
+  color: var(--admin-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statIcon {
+  width: 40px;
+  height: 40px;
+  background-color: var(--admin-accent-soft);
+  color: var(--admin-accent);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--admin-text);
+  font-family: var(--font-heading);
+}
+
+.statTrend {
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trendUp { color: var(--color-success); }
+.trendDown { color: var(--color-error); }
+
+/* Dashboard Sections */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-lg);
+}
+
+.section {
+  background-color: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Pure CSS Chart */
+.chartContainer {
+  height: 250px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-top: var(--space-xl);
+}
+
+.chartBarWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 100%;
+  max-width: 40px;
+  background: linear-gradient(to top, var(--admin-accent), var(--color-secondary));
+  border-radius: 4px 4px 0 0;
+  transition: height 1s ease-out;
+  position: relative;
+  min-height: 4px;
+}
+
+.bar:hover {
+  filter: brightness(1.2);
+}
+
+.barValue {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--admin-text);
+  font-weight: 600;
+}
+
+.barLabel {
+  font-size: 0.75rem;
+  color: var(--admin-text-muted);
+}
+
+/* Recent List */
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.recentItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.recentItem:last-child {
+  border-bottom: none;
+}
+
+.itemAvatar {
+  width: 40px;
+  height: 40px;
+  background-color: var(--admin-surface-hover);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-accent);
+}
+
+.itemInfo {
+  flex: 1;
+}
+
+.itemName {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.itemDesc {
+  font-size: 0.8125rem;
+  color: var(--admin-text-muted);
+}
+
+.itemStatus {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+}
