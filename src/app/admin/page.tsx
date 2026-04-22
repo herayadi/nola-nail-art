@@ -6,14 +6,15 @@ import {
   Users, 
   DollarSign, 
   ChevronRight,
-  User
+  User,
+  Zap,
+  Star
 } from "lucide-react";
 import Link from "next/link";
 import styles from "./dashboard.module.css";
 import Badge from "@/components/ui/Badge";
 
 export default async function AdminDashboard() {
-  // Fetch real stats from DB
   const [
     totalBookings,
     pendingBookings,
@@ -32,68 +33,75 @@ export default async function AdminDashboard() {
     })
   ]);
 
-  // Dummy data for Pure CSS Chart (Booking per Day - last 7 days)
   const chartData = [
-    { day: "Sen", value: 45 },
-    { day: "Sel", value: 80 },
-    { day: "Rab", value: 65 },
-    { day: "Kam", value: 95 },
-    { day: "Jum", value: 120 },
-    { day: "Sab", value: 150 },
-    { day: "Min", value: 110 },
+    { day: "Mon", value: 45 },
+    { day: "Tue", value: 80 },
+    { day: "Wed", value: 65 },
+    { day: "Thu", value: 95 },
+    { day: "Fri", value: 120 },
+    { day: "Sat", value: 150 },
+    { day: "Sun", value: 110 },
   ];
 
   return (
-    <div className="animate-fade-in">
-      <div className={styles.header}>
-        <h1 className={styles.title}>Dashboard</h1>
-        <p className={styles.subtitle}>Selamat datang kembali, Admin Nola Nail Art.</p>
-      </div>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Studio Analytics</h1>
+        <p className={styles.subtitle}>Welcome back, Curator. Here's your studio's performance pulse.</p>
+      </header>
 
       {/* Stats Cards */}
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
-            <span className={styles.statLabel}>Total Booking</span>
+            <span className={styles.statLabel}>Total Engagements</span>
             <div className={styles.statIcon}><Calendar size={20} /></div>
           </div>
           <div className={styles.statValue}>{totalBookings}</div>
           <div className={`${styles.statTrend} ${styles.trendUp}`}>
-            <TrendingUp size={14} /> +12% dari bulan lalu
+            <TrendingUp size={14} /> +12.5% <span className="text-gray-600 ml-1">vs last month</span>
           </div>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
-            <span className={styles.statLabel}>Pending</span>
-            <div className={styles.statIcon} style={{ backgroundColor: 'rgba(224, 168, 32, 0.12)', color: '#E0A820' }}>
+            <span className={styles.statLabel}>Awaiting Confirmation</span>
+            <div className={styles.statIcon} style={{ backgroundColor: 'rgba(224, 168, 32, 0.1)', color: '#E0A820' }}>
               <Clock size={20} />
             </div>
           </div>
           <div className={styles.statValue}>{pendingBookings}</div>
-          <p style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>Butuh konfirmasi segera</p>
+          <p className="text-[10px] text-gray-500 uppercase font-bold mt-3 tracking-widest flex items-center gap-1">
+            <Zap size={10} className="text-warning" /> Immediate Action Required
+          </p>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
-            <span className={styles.statLabel}>Revenue</span>
-            <div className={styles.statIcon}><DollarSign size={20} /></div>
+            <span className={styles.statLabel}>Gross Revenue</span>
+            <div className={styles.statIcon} style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)', color: '#22C55E' }}>
+              <DollarSign size={20} />
+            </div>
           </div>
           <div className={styles.statValue}>
             Rp {(totalRevenue._sum.totalPrice || 0).toLocaleString("id-ID")}
           </div>
           <div className={`${styles.statTrend} ${styles.trendUp}`}>
-            <TrendingUp size={14} /> +8.4%
+            <TrendingUp size={14} /> +8.4% <span className="text-gray-600 ml-1">Profitability index</span>
           </div>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
-            <span className={styles.statLabel}>Customer</span>
-            <div className={styles.statIcon}><Users size={20} /></div>
+            <span className={styles.statLabel}>Total Universe</span>
+            <div className={styles.statIcon} style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', color: '#3B82F6' }}>
+              <Users size={20} />
+            </div>
           </div>
           <div className={styles.statValue}>{totalCustomers}</div>
-          <p style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>Pelanggan terdaftar</p>
+          <p className="text-[10px] text-gray-500 uppercase font-bold mt-3 tracking-widest flex items-center gap-1">
+            <Star size={10} className="text-accent" /> Registered Studio Members
+          </p>
         </div>
       </div>
 
@@ -101,8 +109,8 @@ export default async function AdminDashboard() {
         {/* Left: Chart Section */}
         <section className={styles.section}>
           <div className={styles.sectionTitle}>
-            Aktivitas Mingguan
-            <span style={{ fontSize: '0.875rem', fontWeight: 400, color: 'var(--admin-text-muted)' }}>Booking per Hari</span>
+            Weekly Activity Cycle
+            <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full">Booking Density</span>
           </div>
           
           <div className={styles.chartContainer}>
@@ -123,22 +131,23 @@ export default async function AdminDashboard() {
         {/* Right: Recent Bookings */}
         <section className={styles.section}>
           <div className={styles.sectionTitle}>
-            Booking Terbaru
-            <Link href="/admin/bookings" className={styles.subtitle} style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center' }}>
-              Lihat Semua <ChevronRight size={14} />
+            Recent Sessions
+            <Link href="/admin/bookings" className="text-accent hover:underline text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+              ALL LOGS <ChevronRight size={12} />
             </Link>
           </div>
 
           <div className={styles.recentList}>
             {recentBookings.length === 0 ? (
-              <p style={{ color: 'var(--admin-text-muted)', textAlign: 'center', py: 'var(--space-xl)' }}>
-                Belum ada data booking.
-              </p>
+              <div className="text-center py-10 opacity-20">
+                <Calendar size={48} className="mx-auto mb-2" />
+                <p className="text-xs">No recent sessions recorded.</p>
+              </div>
             ) : (
               recentBookings.map((booking) => (
                 <div key={booking.id} className={styles.recentItem}>
                   <div className={styles.itemAvatar}>
-                    <User size={20} />
+                    <User size={18} />
                   </div>
                   <div className={styles.itemInfo}>
                     <div className={styles.itemName}>{booking.customerName}</div>
@@ -149,6 +158,7 @@ export default async function AdminDashboard() {
                       booking.status === "PENDING" ? "warning" : 
                       booking.status === "CONFIRMED" ? "info" : "success"
                     }
+                    className="text-[10px] px-2"
                   >
                     {booking.status}
                   </Badge>

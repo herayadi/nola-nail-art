@@ -1,89 +1,144 @@
+.container {
+  padding: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .header {
+  margin-bottom: var(--space-3xl);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-xl);
+  align-items: flex-end;
+  border-bottom: 1px solid var(--admin-border);
+  padding-bottom: var(--space-xl);
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--admin-text);
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  background: linear-gradient(to right, var(--admin-text), var(--admin-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.actions {
-  display: flex;
-  gap: var(--space-md);
+.subtitle {
+  color: var(--admin-text-muted);
+  font-size: 1rem;
 }
 
-/* Filters */
-.filters {
-  background-color: var(--admin-surface);
-  border: 1px solid var(--admin-border);
-  padding: var(--space-md) var(--space-lg);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-xl);
+.headerActions {
   display: flex;
   align-items: center;
   gap: var(--space-xl);
 }
 
-.filterGroup {
+.searchWrapper {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
 }
 
-.filterLabel {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--admin-text-muted);
-  text-transform: uppercase;
-}
-
-.select {
-  background: var(--admin-bg);
+.searchInput {
+  background: var(--admin-surface);
   border: 1px solid var(--admin-border);
+  border-radius: var(--radius-full);
+  padding: 12px 20px 12px 52px;
   color: var(--admin-text);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
   font-size: 0.875rem;
+  width: 380px;
+  height: 52px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   outline: none;
 }
 
-.select:focus {
+.searchInput:focus {
+  border-color: var(--admin-accent);
+  background: var(--admin-surface-hover);
+  box-shadow: 0 0 0 4px rgba(201, 160, 74, 0.1), 0 8px 25px rgba(0, 0, 0, 0.3);
+  width: 420px;
+}
+
+.exportBtn {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text-muted);
+  padding: 0 var(--space-xl);
+  height: 52px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.exportBtn:hover {
+  background: var(--admin-text);
+  color: var(--admin-bg);
+  border-color: var(--admin-text);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.filterBtn {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--admin-text-muted);
+  transition: all 0.2s;
+}
+
+.filterBtn:hover, .filterBtnActive {
+  background: var(--admin-accent);
+  color: var(--admin-bg);
   border-color: var(--admin-accent);
 }
 
-/* Table */
-.tableContainer {
-  background-color: var(--admin-surface);
+/* Table Design */
+.tableCard {
+  background: var(--admin-surface);
   border: 1px solid var(--admin-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-2xl);
   overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
 }
 
 .table th {
-  background-color: rgba(255, 255, 255, 0.02);
-  padding: var(--space-md) var(--space-lg);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--admin-text-muted);
+  padding: var(--space-xl) var(--space-lg);
+  background: rgba(255, 255, 255, 0.01);
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--admin-text-muted);
   border-bottom: 1px solid var(--admin-border);
 }
 
 .table td {
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--space-lg);
   border-bottom: 1px solid var(--admin-border);
   font-size: 0.9375rem;
-  vertical-align: middle;
 }
 
 .table tr:last-child td {
@@ -91,76 +146,81 @@
 }
 
 .table tr:hover td {
-  background-color: rgba(255, 255, 255, 0.01);
+  background: rgba(255, 255, 255, 0.02);
 }
 
-/* Customer Info Cell */
 .customerInfo {
   display: flex;
   flex-direction: column;
 }
 
 .customerName {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--admin-text);
 }
 
 .customerPhone {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--admin-text-muted);
 }
 
-/* Service Info Cell */
 .serviceInfo {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-.serviceName {
-  font-weight: 500;
-}
-
-.price {
-  font-size: 0.8125rem;
+.serviceIcon {
+  width: 32px;
+  height: 32px;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--admin-accent);
 }
 
-/* Date/Time Cell */
-.dateTime {
+.price {
+  font-weight: 700;
+  color: var(--admin-accent);
+}
+
+.dateCell {
   display: flex;
   flex-direction: column;
 }
 
 .time {
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--admin-text);
 }
 
 .date {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--admin-text-muted);
 }
 
-/* Actions */
-.viewLink {
-  color: var(--admin-accent);
-  font-weight: 600;
-  font-size: 0.8125rem;
+/* Detail View Modern */
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: var(--space-2xl);
+}
+
+.card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xl);
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-
-.viewLink:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 1024px) {
-  .filters {
-    flex-wrap: wrap;
-    gap: var(--space-md);
-  }
-  
-  .tableContainer {
-    overflow-x: auto;
-  }
+  gap: 10px;
 }

@@ -1,11 +1,22 @@
+.container {
+  padding: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 .header {
-  margin-bottom: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+  border-bottom: 1px solid var(--admin-border);
+  padding-bottom: var(--space-xl);
 }
 
 .title {
-  font-size: 2rem;
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  background: linear-gradient(to right, var(--admin-text), var(--admin-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: var(--space-xs);
-  color: var(--admin-text);
 }
 
 .subtitle {
@@ -13,23 +24,35 @@
   font-size: 1rem;
 }
 
-/* Stats Grid */
+/* Stats Cards */
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-xl);
   margin-bottom: var(--space-3xl);
 }
 
 .statCard {
-  background-color: var(--admin-surface);
+  background: var(--admin-surface);
   border: 1px solid var(--admin-border);
+  border-radius: var(--radius-2xl);
   padding: var(--space-xl);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.statCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--admin-accent);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .statCard:hover {
@@ -37,77 +60,85 @@
   border-color: var(--admin-accent);
 }
 
+.statCard:hover::before {
+  opacity: 1;
+}
+
 .statHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: var(--space-md);
 }
 
 .statLabel {
-  color: var(--admin-text-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.7rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  color: var(--admin-text-muted);
 }
 
 .statIcon {
   width: 40px;
   height: 40px;
-  background-color: var(--admin-accent-soft);
+  background: rgba(201, 160, 74, 0.1);
   color: var(--admin-accent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .statValue {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 800;
   color: var(--admin-text);
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
 }
 
 .statTrend {
+  margin-top: var(--space-md);
   font-size: 0.75rem;
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.trendUp { color: var(--color-success); }
-.trendDown { color: var(--color-error); }
+.trendUp { color: #22C55E; }
+.trendDown { color: #EF4444; }
 
-/* Dashboard Sections */
+/* Main Grid */
 .mainGrid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--space-lg);
+  grid-template-columns: 1fr 400px;
+  gap: var(--space-2xl);
 }
 
 .section {
-  background-color: var(--admin-surface);
+  background: var(--admin-surface);
   border: 1px solid var(--admin-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 .sectionTitle {
   font-size: 1.25rem;
-  margin-bottom: var(--space-xl);
+  font-weight: 700;
+  color: var(--admin-text);
+  margin-bottom: var(--space-2xl);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* Pure CSS Chart */
+/* Chart Container */
 .chartContainer {
-  height: 250px;
+  height: 300px;
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-md);
+  gap: var(--space-lg);
   padding-top: var(--space-xl);
 }
 
@@ -123,16 +154,16 @@
 
 .bar {
   width: 100%;
-  max-width: 40px;
-  background: linear-gradient(to top, var(--admin-accent), var(--color-secondary));
+  background: linear-gradient(to top, var(--admin-accent), #E5D5C8);
   border-radius: 4px 4px 0 0;
-  transition: height 1s ease-out;
   position: relative;
   min-height: 4px;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .bar:hover {
   filter: brightness(1.2);
+  box-shadow: 0 0 20px rgba(201, 160, 74, 0.3);
 }
 
 .barValue {
@@ -140,44 +171,57 @@
   top: -25px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.75rem;
-  color: var(--admin-text);
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--admin-accent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.bar:hover .barValue {
+  opacity: 1;
 }
 
 .barLabel {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
   color: var(--admin-text-muted);
+  text-transform: uppercase;
 }
 
 /* Recent List */
 .recentList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-lg);
 }
 
 .recentItem {
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--admin-border);
+  padding: var(--space-md);
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--radius-xl);
+  transition: all 0.2s;
 }
 
-.recentItem:last-child {
-  border-bottom: none;
+.recentItem:hover {
+  border-color: var(--admin-accent);
+  transform: translateX(5px);
 }
 
 .itemAvatar {
   width: 40px;
   height: 40px;
-  background-color: var(--admin-surface-hover);
   border-radius: 50%;
+  background: var(--admin-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--admin-accent);
+  border: 1px solid var(--admin-border);
 }
 
 .itemInfo {
@@ -185,24 +229,17 @@
 }
 
 .itemName {
+  font-weight: 700;
   font-size: 0.9375rem;
-  font-weight: 600;
+  color: var(--admin-text);
 }
 
 .itemDesc {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--admin-text-muted);
 }
 
-.itemStatus {
-  font-size: 0.75rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .mainGrid {
     grid-template-columns: 1fr;
   }

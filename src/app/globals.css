@@ -62,13 +62,14 @@
   --z-modal: 2000;
 
   /* Admin Dashboard Tokens (Dark Mode Premium) */
-  --admin-bg: #1A1614;
-  --admin-surface: #242019;
-  --admin-surface-hover: #2E2A22;
-  --admin-border: rgba(229, 213, 200, 0.08);
+  --admin-bg: #0F0D0C;
+  --admin-surface: #181512;
+  --admin-surface-hover: #221E19;
+  --admin-border: rgba(201, 160, 74, 0.08);
   --admin-text: #F5F0EB;
-  --admin-text-muted: #9C9590;
+  --admin-text-muted: #8A827B;
   --admin-accent: #C9A04A;
+  --admin-accent-soft: rgba(201, 160, 74, 0.1);
 }
 
 /* Base Reset & Styles */

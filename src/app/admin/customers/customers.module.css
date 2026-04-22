@@ -30,6 +30,8 @@
 .searchWrapper {
   position: relative;
   width: 350px;
+  display: flex;
+  align-items: center;
 }
 
 .searchInput {
@@ -39,9 +41,11 @@
   border-radius: var(--radius-full);
   padding: 12px 20px 12px 48px;
   color: var(--admin-text);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  height: 48px;
 }
 
 .searchInput:focus {

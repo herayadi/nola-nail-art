@@ -3,13 +3,13 @@ import {
   Plus, 
   Edit2, 
   Trash2, 
-  Search,
+  Sparkles,
+  Clock,
   Eye,
-  EyeOff,
-  Sparkles
+  EyeOff
 } from "lucide-react";
 import Link from "next/link";
-import styles from "../bookings/bookings.module.css"; // Reuse table styles
+import styles from "./services.module.css";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 
@@ -19,77 +19,78 @@ export default async function AdminServicesPage() {
   });
 
   return (
-    <div className="animate-fade-in">
-      <div className={styles.header}>
-        <h1 className={styles.title}>Manajemen Layanan</h1>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div>
+          <h1 className={styles.title}>Service Menu</h1>
+          <p className={styles.subtitle}>Defining the artistry and value of your studio's offerings.</p>
+        </div>
         <Link href="/admin/services/new">
-          <Button className="flex items-center gap-2">
-            <Plus size={18} /> Tambah Layanan
+          <Button variant="primary" className="flex items-center gap-2 group">
+            <Plus size={18} className="group-hover:rotate-90 transition-transform" /> 
+            Create New Service
           </Button>
         </Link>
-      </div>
+      </header>
 
-      <div className={styles.tableContainer}>
+      <div className={styles.tableCard}>
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Layanan</th>
-              <th>Kategori</th>
-              <th>Harga</th>
-              <th>Durasi</th>
+              <th>Service Details</th>
+              <th>Classification</th>
+              <th>Investment</th>
+              <th>Duration</th>
               <th>Status</th>
-              <th>Aksi</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {services.map((service) => (
-              <tr key={service.id} style={{ opacity: service.isActive ? 1 : 0.6 }}>
+              <tr key={service.id} style={{ opacity: service.isActive ? 1 : 0.5 }}>
                 <td>
-                  <div className="flex items-center gap-3">
-                    <div style={{ 
-                      width: '40px', 
-                      height: '40px', 
-                      borderRadius: '8px', 
-                      overflow: 'hidden',
-                      backgroundColor: 'var(--admin-surface-hover)'
-                    }}>
+                  <div className={styles.serviceCell}>
+                    <div className={styles.imageWrapper}>
                       <img 
                         src={service.image} 
                         alt={service.name} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        className={styles.image} 
                       />
                     </div>
                     <div>
-                      <div className="font-semibold flex items-center gap-2">
-                        {service.name}
-                        {service.isPopular && <Sparkles size={14} className="text-accent" />}
+                      <div className="flex items-center gap-2">
+                        <span className={styles.serviceName}>{service.name}</span>
+                        {service.isPopular && <Sparkles size={12} className="text-accent" />}
                       </div>
-                      <div className="text-xs text-gray-400 line-clamp-1">{service.shortDescription}</div>
+                      <div className={styles.serviceDesc}>{service.shortDescription}</div>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <Badge variant="neutral">{service.category}</Badge>
+                  <span className={styles.categoryBadge}>{service.category}</span>
                 </td>
                 <td>
-                  <div className="font-bold">Rp {service.price.toLocaleString("id-ID")}</div>
+                  <div className={styles.price}>Rp {service.price.toLocaleString("id-ID")}</div>
                 </td>
                 <td>
-                  <div className="text-sm text-gray-400">{service.duration}</div>
+                  <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
+                    <Clock size={12} />
+                    {service.duration}
+                  </div>
                 </td>
                 <td>
-                  <Badge variant={service.isActive ? "success" : "neutral"}>
-                    {service.isActive ? "Aktif" : "Non-aktif"}
+                  <Badge variant={service.isActive ? "success" : "neutral"} className="text-[9px] px-3">
+                    {service.isActive ? "ACTIVE" : "HIDDEN"}
                   </Badge>
                 </td>
                 <td>
                   <div className="flex gap-2">
                     <Link href={`/admin/services/${service.id}`}>
-                      <button className="p-2 hover:bg-white/5 rounded-md text-gray-400 hover:text-white transition-colors">
+                      <button className={`${styles.actionBtn} ${styles.editBtn}`} title="Edit Service">
                         <Edit2 size={16} />
                       </button>
                     </Link>
-                    <button className="p-2 hover:bg-error/10 rounded-md text-error transition-colors">
+                    <button className={`${styles.actionBtn} ${styles.deleteBtn}`} title="Delete Service">
                       <Trash2 size={16} />
                     </button>
                   </div>
