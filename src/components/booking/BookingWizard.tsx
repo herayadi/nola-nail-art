@@ -513,7 +513,7 @@ export default function BookingWizard() {
           )}
         </label>
         <div className={styles.timeGrid}>
-          {availableTimeSlots.map((slot: string) => {
+          {availableTimeSlots.map((slot: any) => {
             const isBusy = busySlots.includes(slot.time);
             return (
               <button
