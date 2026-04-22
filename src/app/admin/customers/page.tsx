@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
-import { 
-  User, 
-  Search, 
+import {
+  User,
+  Search,
   Calendar,
   CreditCard,
   ChevronRight,
   TrendingUp,
-  Award
+  Award,
 } from "lucide-react";
 import Link from "next/link";
 import styles from "./customers.module.css";
@@ -21,13 +21,18 @@ export default async function CustomersPage() {
       <header className={styles.header}>
         <div>
           <h1 className={styles.title}>Customer Universe</h1>
-          <p className={styles.subtitle}>Analyzing the loyalty and journey of your studio visitors.</p>
+          <p className={styles.subtitle}>
+            Analyzing the loyalty and journey of your studio visitors.
+          </p>
         </div>
         <div className={styles.searchWrapper}>
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
-          <input 
-            type="text" 
-            placeholder="Search by name or connection..." 
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+            size={20}
+          />
+          <input
+            type="text"
+            placeholder="Search by name or connection..."
             className={styles.searchInput}
           />
         </div>
@@ -53,7 +58,7 @@ export default async function CustomersPage() {
                 </td>
               </tr>
             ) : (
-              customers.map((customer) => (
+              customers.map((customer: any) => (
                 <tr key={customer.id}>
                   <td>
                     <div className={styles.profileCell}>
@@ -70,7 +75,9 @@ export default async function CustomersPage() {
                     <div className={styles.stats}>
                       <span className={styles.statValue}>
                         {customer.totalBookings}
-                        <span className="text-xs text-gray-500 ml-1">VISITS</span>
+                        <span className="text-xs text-gray-500 ml-1">
+                          VISITS
+                        </span>
                       </span>
                       <span className="text-[10px] text-gray-500 flex items-center gap-1">
                         <TrendingUp size={10} /> RECURRING
@@ -79,7 +86,9 @@ export default async function CustomersPage() {
                   </td>
                   <td>
                     <div className={styles.stats}>
-                      <span className={`${styles.statValue} ${styles.statAccent}`}>
+                      <span
+                        className={`${styles.statValue} ${styles.statAccent}`}
+                      >
                         Rp {customer.totalSpent.toLocaleString("id-ID")}
                       </span>
                       <span className="text-[10px] text-gray-500 flex items-center gap-1 uppercase">
@@ -90,12 +99,17 @@ export default async function CustomersPage() {
                   <td>
                     <div className="flex flex-col">
                       <span className="text-xs text-gray-400">
-                        {new Date(customer.createdAt).toLocaleDateString("id-ID", {
-                          month: 'long',
-                          year: 'numeric'
-                        })}
+                        {new Date(customer.createdAt).toLocaleDateString(
+                          "id-ID",
+                          {
+                            month: "long",
+                            year: "numeric",
+                          },
+                        )}
                       </span>
-                      <span className="text-[10px] text-gray-600 uppercase tracking-tighter">Registered Date</span>
+                      <span className="text-[10px] text-gray-600 uppercase tracking-tighter">
+                        Registered Date
+                      </span>
                     </div>
                   </td>
                   <td>
