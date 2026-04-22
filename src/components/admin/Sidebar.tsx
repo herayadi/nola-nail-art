@@ -3,19 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { 
-  LayoutDashboard, 
-  CalendarCheck, 
-  Sparkles, 
-  Image as ImageIcon, 
-  Users, 
-  Star, 
-  Tag, 
-  HelpCircle, 
-  Settings, 
+import {
+  LayoutDashboard,
+  CalendarCheck,
+  Sparkles,
+  Image as ImageIcon,
+  Users,
+  Star,
+  Tag,
+  HelpCircle,
+  Settings,
   UserCog,
   LogOut,
-  X
+  X,
 } from "lucide-react";
 import styles from "./Sidebar.module.css";
 
@@ -44,19 +44,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`}>
       <div className={styles.header}>
         <span className={styles.logo}>NOLA</span>
-        <button className={styles.mobileClose} onClick={onClose} aria-label="Close sidebar">
+        <button
+          className={styles.mobileClose}
+          onClick={onClose}
+          aria-label="Close sidebar"
+        >
           <X size={20} />
         </button>
       </div>
 
       <nav className={styles.nav}>
-        {MENU_ITEMS.map((item) => {
+        {MENU_ITEMS.map((item: any) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href || (item.href !== "/admin" && pathname?.startsWith(item.href));
-          
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/admin" && pathname?.startsWith(item.href));
+
           return (
-            <Link 
-              key={item.href} 
+            <Link
+              key={item.href}
               href={item.href}
               className={`${styles.menuItem} ${isActive ? styles.activeItem : ""}`}
               onClick={() => {
@@ -71,8 +77,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       </nav>
 
       <div className={styles.footer}>
-        <button 
-          className={styles.logoutBtn} 
+        <button
+          className={styles.logoutBtn}
           onClick={() => signOut({ callbackUrl: "/login" })}
         >
           <LogOut size={20} />

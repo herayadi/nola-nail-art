@@ -1,7 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, Edit2, X, Loader2, HelpCircle, Hash, Tag } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  Edit2,
+  X,
+  Loader2,
+  HelpCircle,
+  Hash,
+  Tag,
+} from "lucide-react";
 import styles from "./faq.module.css";
 import { useRouter } from "next/navigation";
 
@@ -127,37 +136,48 @@ export default function FAQManager({ initialFaqs, services }: FAQManagerProps) {
             <p className="text-xl font-bold">Belum ada FAQ.</p>
           </div>
         ) : (
-          faqs.map((faq) => (
+          faqs.map((faq: any) => (
             <div key={faq.id} className={styles.faqItem}>
               <div className={styles.faqHeader}>
                 <h3 className={styles.question}>{faq.question}</h3>
                 <div className={styles.actions}>
-                  <button onClick={() => openEditModal(faq)} className={styles.actionBtn}>
+                  <button
+                    onClick={() => openEditModal(faq)}
+                    className={styles.actionBtn}
+                  >
                     <Edit2 size={18} />
                   </button>
-                  <button 
-                    onClick={() => handleDelete(faq.id)} 
+                  <button
+                    onClick={() => handleDelete(faq.id)}
                     className={`${styles.actionBtn} ${styles.deleteBtn}`}
                     disabled={loadingId === faq.id}
                   >
-                    {loadingId === faq.id ? <Loader2 className="animate-spin" size={18} /> : <Trash2 size={18} />}
+                    {loadingId === faq.id ? (
+                      <Loader2 className="animate-spin" size={18} />
+                    ) : (
+                      <Trash2 size={18} />
+                    )}
                   </button>
                 </div>
               </div>
               <p className={styles.answer}>{faq.answer}</p>
               <div className={styles.meta}>
                 <div className="flex gap-4">
-                  {faq.service && (
+                  {(faq.service && (
                     <span className={styles.serviceTag}>
                       <Tag size={12} /> {faq.service.name}
                     </span>
-                  ) || (
-                    <span className={styles.serviceTag} style={{ opacity: 0.5 }}>
+                  )) || (
+                    <span
+                      className={styles.serviceTag}
+                      style={{ opacity: 0.5 }}
+                    >
                       <Tag size={12} /> General
                     </span>
                   )}
                   <span className={styles.sortOrder}>
-                    <Hash size={12} className="inline mr-1" /> Order: {faq.sortOrder}
+                    <Hash size={12} className="inline mr-1" /> Order:{" "}
+                    {faq.sortOrder}
                   </span>
                 </div>
               </div>
@@ -166,7 +186,16 @@ export default function FAQManager({ initialFaqs, services }: FAQManagerProps) {
         )}
       </div>
 
-      <button onClick={openAddModal} className={styles.addBtn} style={{ position: 'fixed', bottom: '40px', right: '40px', zIndex: 100 }}>
+      <button
+        onClick={openAddModal}
+        className={styles.addBtn}
+        style={{
+          position: "fixed",
+          bottom: "40px",
+          right: "40px",
+          zIndex: 100,
+        }}
+      >
         <Plus size={24} /> <span>Create FAQ</span>
       </button>
 
@@ -176,14 +205,18 @@ export default function FAQManager({ initialFaqs, services }: FAQManagerProps) {
             <button className={styles.closeModal} onClick={closeModal}>
               <X size={24} />
             </button>
-            <h2 className={styles.modalTitle}>{editFaq ? "Refine FAQ" : "New FAQ Entry"}</h2>
+            <h2 className={styles.modalTitle}>
+              {editFaq ? "Refine FAQ" : "New FAQ Entry"}
+            </h2>
             <form onSubmit={handleSubmit}>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Question</label>
                 <input
                   type="text"
                   value={form.question}
-                  onChange={(e) => setForm({ ...form, question: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, question: e.target.value })
+                  }
                   className={styles.formInput}
                   placeholder="What is your policy on...?"
                   required
@@ -199,17 +232,29 @@ export default function FAQManager({ initialFaqs, services }: FAQManagerProps) {
                   required
                 />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "24px",
+                }}
+              >
                 <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Link to Service (Optional)</label>
+                  <label className={styles.formLabel}>
+                    Link to Service (Optional)
+                  </label>
                   <select
                     value={form.serviceId}
-                    onChange={(e) => setForm({ ...form, serviceId: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, serviceId: e.target.value })
+                    }
                     className={styles.formSelect}
                   >
                     <option value="">General (No specific service)</option>
-                    {services.map((s) => (
-                      <option key={s.id} value={s.id}>{s.name}</option>
+                    {services.map((s: any) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -218,17 +263,31 @@ export default function FAQManager({ initialFaqs, services }: FAQManagerProps) {
                   <input
                     type="number"
                     value={form.sortOrder}
-                    onChange={(e) => setForm({ ...form, sortOrder: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, sortOrder: e.target.value })
+                    }
                     className={styles.formInput}
                   />
                 </div>
               </div>
               <div className={styles.modalActions}>
-                <button type="button" onClick={closeModal} className={styles.cancelBtn}>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className={styles.cancelBtn}
+                >
                   Discard
                 </button>
-                <button type="submit" className={styles.submitBtn} disabled={loadingId === "form"}>
-                  {loadingId === "form" ? <Loader2 className="animate-spin" size={24} /> : "Publish Entry"}
+                <button
+                  type="submit"
+                  className={styles.submitBtn}
+                  disabled={loadingId === "form"}
+                >
+                  {loadingId === "form" ? (
+                    <Loader2 className="animate-spin" size={24} />
+                  ) : (
+                    "Publish Entry"
+                  )}
                 </button>
               </div>
             </form>

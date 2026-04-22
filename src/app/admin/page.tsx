@@ -140,7 +140,7 @@ export default async function AdminDashboard() {
           </div>
 
           <div className={styles.chartContainer}>
-            {chartData.map((item) => (
+            {chartData.map((item: any) => (
               <div key={item.day} className={styles.chartBarWrapper}>
                 <div
                   className={styles.bar}

@@ -1,7 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { UserCog, Plus, Trash2, KeyRound, X, Loader2, Shield, ShieldCheck } from "lucide-react";
+import {
+  UserCog,
+  Plus,
+  Trash2,
+  KeyRound,
+  X,
+  Loader2,
+  Shield,
+  ShieldCheck,
+} from "lucide-react";
 import styles from "./users.module.css";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +48,12 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
 
   const openEditModal = (user: User) => {
     setEditUser(user);
-    setForm({ name: user.name || "", email: user.email, password: "", role: user.role });
+    setForm({
+      name: user.name || "",
+      email: user.email,
+      password: "",
+      role: user.role,
+    });
     setError("");
     setShowModal(true);
   };
@@ -59,7 +73,10 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
       let res: Response;
       if (editUser) {
         // Update existing user
-        const body: Record<string, string> = { name: form.name, role: form.role };
+        const body: Record<string, string> = {
+          name: form.name,
+          role: form.role,
+        };
         if (form.password) body.password = form.password;
         res = await fetch(`/api/admin/users/${editUser.id}`, {
           method: "PATCH",
@@ -97,7 +114,8 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Hapus user ini? Tindakan ini tidak dapat dibatalkan.")) return;
+    if (!confirm("Hapus user ini? Tindakan ini tidak dapat dibatalkan."))
+      return;
     setLoadingId(id);
     try {
       const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" });
@@ -121,7 +139,7 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
             <p>Belum ada user terdaftar.</p>
           </div>
         ) : (
-          users.map((user) => (
+          users.map((user: any) => (
             <div key={user.id} className={styles.userCard}>
               <div className={styles.cardTop}>
                 <div className={styles.avatar}>
@@ -130,11 +148,17 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
                 <div className={styles.userInfo}>
                   <div className={styles.userName}>{user.name || "—"}</div>
                   <div className={styles.userEmail}>{user.email}</div>
-                  <span className={`${styles.roleBadge} ${user.role === "SUPERADMIN" ? styles.roleSuperAdmin : styles.roleAdmin}`}>
+                  <span
+                    className={`${styles.roleBadge} ${user.role === "SUPERADMIN" ? styles.roleSuperAdmin : styles.roleAdmin}`}
+                  >
                     {user.role === "SUPERADMIN" ? (
-                      <><ShieldCheck size={12} /> Super Admin</>
+                      <>
+                        <ShieldCheck size={12} /> Super Admin
+                      </>
                     ) : (
-                      <><Shield size={12} /> Admin</>
+                      <>
+                        <Shield size={12} /> Admin
+                      </>
                     )}
                   </span>
                 </div>
@@ -155,7 +179,9 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
                   {loadingId === user.id ? (
                     <Loader2 size={14} className="animate-spin" />
                   ) : (
-                    <><Trash2 size={14} /> Hapus</>
+                    <>
+                      <Trash2 size={14} /> Hapus
+                    </>
                   )}
                 </button>
               </div>
@@ -196,7 +222,9 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
                   <input
                     type="email"
                     value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.target.value })
+                    }
                     className={styles.formInput}
                     placeholder="admin@nola.com"
                     required
@@ -205,12 +233,16 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
               )}
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>
-                  {editUser ? "Password Baru (kosongkan jika tidak diubah)" : "Password"}
+                  {editUser
+                    ? "Password Baru (kosongkan jika tidak diubah)"
+                    : "Password"}
                 </label>
                 <input
                   type="password"
                   value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
                   className={styles.formInput}
                   placeholder="••••••••"
                   required={!editUser}
@@ -229,12 +261,23 @@ export default function UserManager({ initialUsers }: UserManagerProps) {
               </div>
               {error && <p className={styles.errorMsg}>{error}</p>}
               <div className={styles.modalActions}>
-                <button type="button" onClick={closeModal} className={styles.cancelBtn}>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className={styles.cancelBtn}
+                >
                   Batal
                 </button>
-                <button type="submit" className={styles.submitBtn} disabled={loadingId === "form"}>
+                <button
+                  type="submit"
+                  className={styles.submitBtn}
+                  disabled={loadingId === "form"}
+                >
                   {loadingId === "form" ? (
-                    <><Loader2 size={16} className="animate-spin" /> Menyimpan...</>
+                    <>
+                      <Loader2 size={16} className="animate-spin" />{" "}
+                      Menyimpan...
+                    </>
                   ) : (
                     <>{editUser ? "Simpan Perubahan" : "Buat User"}</>
                   )}

@@ -33,7 +33,7 @@ export default function Portfolio({ portfolio }: { portfolio: any[] }) {
         {/* Filters */}
         <ScrollReveal animation="fadeIn" delay={150}>
           <div className={styles.filters}>
-            {categories.map((category) => (
+            {categories.map((category: any) => (
               <button
                 key={category}
                 className={`${styles.filterBtn} ${activeFilter === category ? styles.active : ""}`}
