@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import styles from "./reviews.module.css";
 import ReviewList from "./ReviewList";
@@ -29,3 +30,4 @@ export default async function AdminReviewsPage() {
     </div>
   );
 }
+

@@ -8,7 +8,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import { prisma } from "@/lib/prisma";
 import { buildWhatsAppUrl, COMMON_MESSAGES } from "@/lib/whatsapp";
 
-// Enable ISR (Incremental Static Regeneration)
+export const dynamic = "force-dynamic";
 export const revalidate = 3600; // Refetch data at most once per hour
 
 // Generates static paths (SSG) for all services in database

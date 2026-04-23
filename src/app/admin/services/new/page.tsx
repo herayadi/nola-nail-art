@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import ServiceForm from "../ServiceForm";
 
 export default function NewServicePage() {
@@ -11,3 +12,4 @@ export default function NewServicePage() {
     </div>
   );
 }
+

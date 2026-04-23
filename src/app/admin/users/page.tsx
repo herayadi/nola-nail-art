@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import styles from "./users.module.css";
 import UserManager from "./UserManager";
@@ -38,3 +39,4 @@ export default async function AdminUsersPage() {
     </div>
   );
 }
+

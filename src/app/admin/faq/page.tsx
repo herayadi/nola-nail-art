@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import styles from "./faq.module.css";
 import FAQManager from "./FAQManager";
@@ -41,3 +42,4 @@ export default async function AdminFAQPage() {
     </div>
   );
 }
+

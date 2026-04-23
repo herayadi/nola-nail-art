@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import {
   Plus,
@@ -114,3 +115,4 @@ export default async function AdminPortfolioPage() {
     </div>
   );
 }
+

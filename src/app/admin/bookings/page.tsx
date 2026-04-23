@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import {
   Search,
@@ -185,3 +186,4 @@ export default async function BookingsPage({
     </div>
   );
 }
+

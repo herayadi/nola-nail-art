@@ -1,6 +1,8 @@
 import Services from "@/components/home/Services";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Layanan & Harga | Nola Nail Art",
   description:

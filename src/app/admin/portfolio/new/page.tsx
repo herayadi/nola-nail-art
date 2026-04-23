@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import PortfolioForm from "../PortfolioForm";
 
 export default function NewPortfolioPage() {
@@ -11,3 +12,4 @@ export default function NewPortfolioPage() {
     </div>
   );
 }
+

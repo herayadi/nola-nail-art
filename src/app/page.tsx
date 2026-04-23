@@ -9,6 +9,8 @@ import HowToBook from "@/components/home/HowToBook";
 import FAQ from "@/components/home/FAQ";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const services = await prisma.service.findMany({
     orderBy: { id: "asc" },
