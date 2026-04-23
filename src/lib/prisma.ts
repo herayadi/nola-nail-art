@@ -1,24 +1,34 @@
-import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import dotenv from "dotenv";
 import path from "path";
+import { PrismaClient } from "@prisma/client";
+import { PrismaLibSQL } from "@prisma/adapter-libsql";
+import { createClient } from "@libsql/client";
 
-const connectionString = process.env.DATABASE_URL || "file:./dev.db";
-
-// Ensure the path is absolute for the adapter
-const dbPath = connectionString.replace("file:", "");
-const absoluteDbPath = path.isAbsolute(dbPath)
-  ? dbPath
-  : path.join(/* turbopackIgnore: true */ process.cwd(), dbPath);
-
-// The adapter expects an object with a 'url' property, not a database instance
-const adapter = new PrismaBetterSqlite3({
-  url: `file:${absoluteDbPath}`,
-});
+// Ensure .env is loaded from the root even when running from subdirectories
+dotenv.config({ path: path.join(process.cwd(), ".env") });
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
+
+const url = process.env.TURSO_DATABASE_URL;
+const authToken = process.env.TURSO_AUTH_TOKEN;
+
+console.log("PRISMA_INIT: url =", url);
+console.log("PRISMA_INIT: authToken =", authToken ? "exists" : "missing");
+
+if (!url) {
+  throw new Error("TURSO_DATABASE_URL is not defined in environment variables");
+}
+
+// Initialize Turso LibSQL client
+const libsql = createClient({
+  url,
+  authToken,
+});
+
+// Pass the LibSQL adapter to Prisma
+const adapter = new PrismaLibSQL(libsql);
 
 export const prisma =
   globalForPrisma.prisma ??

@@ -7,6 +7,8 @@ async function main() {
 
   const hashedPassword = await bcrypt.hash("nola2026", 10);
 
+  console.log("Using DB URL:", process.env.TURSO_DATABASE_URL);
+
   const admin = await prisma.user.upsert({
     where: { email: "admin@nola.com" },
     update: {},
