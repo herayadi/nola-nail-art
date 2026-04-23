@@ -20,7 +20,7 @@ interface FAQ {
   answer: string;
   sortOrder: number;
   serviceId: string | null;
-  service?: { id: string; name: string };
+  service: { id: string; name: string } | null;
 }
 
 interface Service {
