@@ -3,10 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import path from "path";
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not defined");
-}
+const connectionString = process.env.DATABASE_URL || "file:./dev.db";
 
 // Ensure the path is absolute for the adapter
 const dbPath = connectionString.replace("file:", "");
